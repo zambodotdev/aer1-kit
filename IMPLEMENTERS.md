@@ -10,3 +10,11 @@ Laurent Lemonnier (iSoluce) wrote a verifier from the text of draft-zambo-aer1-2
 - His related draft: draft-lemonnier-scitt-decision-provenance (a record of a human decision placed above execution evidence such as an AER-1 receipt)
 
 He also reported three places where the draft text and the kit differ; in each case he followed the kit, which is the governing published record per draft -26.
+
+## Giskard (giskard09): anchor worked example and independent output_hash verifier
+
+Giskard built aer1-anchor-witness, a worked example that computes an AER-1 receipt output_hash exactly per draft-zambo-aer1-26 (Table 1 and Section 5) and anchors it into AnchorRegistry, a permissionless contract deployed at the same address on Base, Arbitrum, and Ink. The repository ships an independent, standard-library-only verifier that recomputes output_hash from the declared canonical_bytes and confirms the matching Anchored event on Base mainnet.
+
+His example uses a synthetic receipt and says so plainly in its provenance statement: it was not produced by a running AER-1 client, and it claims no endorsement. He also observes that a permissionless-contract anchor fits none of the five anchor_type values the draft defines today, and presents the example as what a sixth anchor shape could look like.
+
+- Code: https://github.com/giskard09/aer1-anchor-witness
