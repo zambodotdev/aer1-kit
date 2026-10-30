@@ -1,0 +1,132 @@
+{
+  "implementations": [
+    {
+      "announcement_url": "https://datatracker.ietf.org/doc/draft-zambo-aer1/",
+      "chain_vectors": "22/22",
+      "code_url": "https://gitlab.com/rambozambodotdev/zambo",
+      "date_verified": "2026-10-01",
+      "implementer": "Brennan Zambo",
+      "language": "Python / JavaScript",
+      "merkle_vectors": "8/8",
+      "name": "Zambo reference implementation",
+      "role": "reference",
+      "status": "verified"
+    },
+    {
+      "name": "ARION's AER-1 verifier",
+      "implementer": "ARION",
+      "role": "independent",
+      "language": "Node.js (stdlib-only)",
+      "chain_vectors": "165/165 (full suite)",
+      "merkle_vectors": "165/165 (full suite)",
+      "status": "conformant",
+      "date_verified": "2026-10-01",
+      "code_url": "https://files.profullstack.com/~arion/public/aer1/verify.js",
+      "announcement_url": "https://thecolony.cc/post/75898d42-f9dc-4431-8949-61757b8fb12d",
+      "notes": "First complete independent implementation, written from draft -08 text alone (no kit). 165 vector checks, 0 failures; independently reproduced 165/165 twice by rambo (97/97 verdicts matched reference kit, Merkle root byte-exact). Negative corpus v1.2.0: 73/73 self-oracle, 67/67 kit-oracle. Filed 3 spec findings adopted by -09. Report: https://files.profullstack.com/~arion/public/aer1/REPORT.md"
+    },
+    {
+      "name": "ARION's AER-1 Java verifier",
+      "implementer": "ARION",
+      "role": "independent",
+      "language": "Java 11+",
+      "chain_vectors": "186/186",
+      "merkle_vectors": "186/186",
+      "status": "conformant",
+      "date_verified": "2026-10-03",
+      "code_url": "https://files.profullstack.com/~arion/public/aer1/",
+      "announcement_url": "https://thecolony.cc/post/17dbbb52-56f0-45c7-8daa-1ae116bfc129",
+      "notes": "First -10 conformance anywhere. 186/186 vectors against draft-zambo-aer1-10. Hand-rolled RFC 8259 lexeme retention to handle parse-erasing loader edge case."
+    },
+    {
+      "name": "aer1-perl",
+      "implementer": "ColonistOne",
+      "role": "independent",
+      "language": "Perl (core modules only)",
+      "chain_vectors": "22/22",
+      "merkle_vectors": "8/8",
+      "status": "conformant",
+      "date_verified": "2026-10-03",
+      "code_url": "https://github.com/ColonistOne/aer1-perl",
+      "announcement_url": "https://thecolony.cc/post/17dbbb52-56f0-45c7-8daa-1ae116bfc129",
+      "notes": "Independent Perl verifier for draft-zambo-aer1-09, core modules only (Digest::SHA, MIME::Base64). 68/68 vectors with zero disagreements against Python and Node reference runners. Filed 3 spec findings adopted by -10: Section 7.1 string escaping under-specification, Python-version-dependent timestamp check, nine rules lacking isolating vectors."
+    },
+    {
+      "name": "ARION's AER-1 Ruby verifier",
+      "implementer": "ARION",
+      "role": "independent",
+      "language": "Ruby",
+      "chain_vectors": "24834/24834 parity",
+      "merkle_vectors": "24834/24834 parity",
+      "status": "parity-checked",
+      "date_verified": "2026-10-03",
+      "code_url": "https://files.profullstack.com/~arion/public/aer1/ruby/",
+      "announcement_url": "https://thecolony.cc/post/75898d42-f9dc-4431-8949-61757b8fb12d",
+      "notes": "24,834 parity comparisons vs JS logic, 0 divergences. Byte-exact canonical JSON including non-BMP keys, surrogate pairs, DEL/control escapes. Evidence basis: parity comparisons against the implementer's own JS verifier logic, not runs of the AER-1 conformance kit. Status reflects parity only."
+    },
+    {
+      "name": "ARION's AER-1 Swift verifier",
+      "implementer": "ARION",
+      "role": "independent",
+      "language": "Swift",
+      "chain_vectors": "19615/19615 parity",
+      "merkle_vectors": "19615/19615 parity",
+      "status": "parity-checked",
+      "date_verified": "2026-10-03",
+      "code_url": "https://files.profullstack.com/~arion/public/aer1/swift/",
+      "announcement_url": "https://thecolony.cc/post/75898d42-f9dc-4431-8949-61757b8fb12d",
+      "notes": "Swift 6.3.3. 19,615 parity comparisons, 0 divergences. Current fixture verdicts match expected results. Evidence basis: parity comparisons against the implementer's own JS verifier logic, not runs of the AER-1 conformance kit. Status reflects parity only."
+    },
+    {
+      "name": "ARION's AER-1 PHP verifier",
+      "implementer": "ARION",
+      "role": "independent",
+      "language": "PHP",
+      "chain_vectors": "11529 runs, 0 verdict divergences",
+      "merkle_vectors": "11529 runs, 0 verdict divergences",
+      "status": "parity-checked",
+      "date_verified": "2026-10-03",
+      "code_url": "https://files.profullstack.com/~arion/public/aer1/php/",
+      "announcement_url": "https://thecolony.cc/post/75898d42-f9dc-4431-8949-61757b8fb12d",
+      "notes": "11,529 runs. Zero verdict/check/kind divergences on parseable input. 531 differences are only error message text wording, not conformance failures. Evidence basis: parity comparisons against the implementer's own JS verifier logic, not runs of the AER-1 conformance kit. Status reflects parity only."
+    },
+    {
+      "name": "Genesis's AER-1 verifier",
+      "language": "Python (stdlib only)",
+      "status": "conformant",
+      "code_url": "https://thecolony.cc/post/4f03ac28-1563-48e9-afc6-475c20c6ca63",
+      "announcement_url": "https://thecolony.cc/post/4f03ac28-1563-48e9-afc6-475c20c6ca63",
+      "chain_vectors": "",
+      "date_verified": "2026-10-15",
+      "implementer": "Genesis",
+      "merkle_vectors": "",
+      "role": "independent"
+    },
+    {
+      "name": "WhiteMagic AER-1 validator",
+      "language": "Python / Rust",
+      "status": "conformant",
+      "code_url": "https://api.whitemagic.dev/aer1/verify",
+      "announcement_url": "https://datatracker.ietf.org/doc/draft-zambo-aer1/",
+      "chain_vectors": "",
+      "date_verified": "2026-10-18",
+      "implementer": "WhiteMagic Labs",
+      "merkle_vectors": "",
+      "role": "independent"
+    },
+    {
+      "name": "aer1-anchor-witness",
+      "language": "Python (stdlib only)",
+      "status": "parity-checked",
+      "code_url": "https://github.com/giskard09/aer1-anchor-witness",
+      "announcement_url": "https://github.com/giskard09/aer1-anchor-witness",
+      "chain_vectors": "",
+      "date_verified": "2026-10-26",
+      "implementer": "giskard09",
+      "merkle_vectors": "",
+      "role": "independent"
+    }
+  ],
+  "spec_revision": "-10",
+  "updated": "2026-10-03"
+}
