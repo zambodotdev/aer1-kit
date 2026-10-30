@@ -169,6 +169,30 @@ runner's double quotes (Skitter's cross-runner diff, 2026-10-18).
 aer-1/runner-parity.py asserts byte-identical per-vector detail
 lines across both runners so the divergence cannot regress
 silently.
+
+-24 (kit v1.5.8): metadata binding (draft -26 Section 6 step 4).
+check() now recomputes the Section 3.1 canonical metadata block
+whenever a receipt carries metadata_hash and fails on a mismatch:
+the block (created_at, id, output_hash, provenance_class,
+receipt_schema_version, and the tool object's name/scope/version;
+every value a string; member names sorted by code point; Section
+7.1 escaping) is rebuilt from the receipt's stored member values
+and its SHA-256 compared against the stored metadata_hash. No
+runner recomputed it before: a 0.4 receipt whose created_at, id,
+or tool version was changed after issuance passed every kit
+check, and aer1_verify reported the id as a label outside the
+commitment (Laurent Lemonnier's finding, 2026-10-29, from the
+DPS x AER-1 composition in his dps-scitt-decision-layer
+repository, interop/aer1-decision). His four probes, plus the
+same four mutations of valid/real-04, are pinned as runner test
+fixtures under tests/metadata-probes/ (outside the published
+corpus; corpus files, counts, and digests are unchanged).
+valid/real-04, the corpus vector carrying a correct Section 3.1
+metadata_hash, is the ground truth the recomputation reproduces
+byte-exactly. Absence of metadata_hash is not failed: Table 1
+makes the member conditional and mandates recomputation whenever
+it is present, and the corpus pins pre-binding 0.4 vectors that
+carry none.
 """
 import base64
 import binascii
@@ -325,6 +349,45 @@ def _is_legacy_production_shape(receipt):
     return ctx.get("name") == tool
 
 
+def _metadata_block(receipt):
+    """Rebuild the Section 3.1 canonical metadata block from a
+    receipt's stored member values: exactly created_at, id,
+    output_hash, provenance_class, receipt_schema_version, and tool
+    (an object with exactly name, scope, version), every value a
+    JSON string. Returns None when any covered member is missing or
+    not a string; the block then cannot be recomputed, and a carried
+    metadata_hash cannot confirm."""
+    tool = receipt.get("tool")
+    if not isinstance(tool, dict):
+        return None
+    block = {}
+    for key in ("created_at", "id", "output_hash", "provenance_class",
+                "receipt_schema_version"):
+        value = receipt.get(key)
+        if not isinstance(value, str):
+            return None
+        block[key] = value
+    tool_block = {}
+    for key in ("name", "scope", "version"):
+        value = tool.get(key)
+        if not isinstance(value, str):
+            return None
+        tool_block[key] = value
+    block["tool"] = tool_block
+    return block
+
+
+def _metadata_digest(block):
+    """The metadata_hash value for a Section 3.1 block: "sha256:"
+    plus the lowercase hex SHA-256 of the block serialized with
+    member names sorted by Unicode code point at every object
+    level, no whitespace outside strings, and the string escaping
+    of Section 7.1 (Python json.dumps with ensure_ascii=True)."""
+    blob = json.dumps(block, sort_keys=True, separators=(",", ":"),
+                      ensure_ascii=True).encode("utf-8")
+    return "sha256:" + hashlib.sha256(blob).hexdigest()
+
+
 def check(receipt):
     """Return a list of failure reasons; empty means conformant."""
     failures = []
@@ -403,6 +466,34 @@ def check(receipt):
         want = "sha256:" + hashlib.sha256(raw).hexdigest()
         if oh != want:
             failures.append("output_hash does not match sha256(canonical_bytes)")
+    # Metadata binding (draft Section 6 step 4; block defined in
+    # Section 3.1). Whenever a receipt carries metadata_hash, the
+    # verifier recomputes the canonical metadata block from the
+    # receipt's stored member values and compares; a mismatch is a
+    # commitment failure, the same "verification failed" class as an
+    # output_hash mismatch. This recomputation is what binds the id,
+    # creation time, tool name, version, scope, and provenance class
+    # to the record: without it, those members could be rewritten on
+    # a stored 0.4 receipt without detection (Laurent Lemonnier's
+    # finding, 2026-10-29). Absence of the member is not failed
+    # here: Table 1 makes it conditional and mandates recomputation
+    # whenever it is present, and the pre-binding corpus vectors
+    # carry none.
+    mh = receipt.get("metadata_hash")
+    if mh is not None:
+        if not isinstance(mh, str) or not HASH_RE.match(mh):
+            failures.append(
+                "metadata_hash is not sha256: + lowercase hex digest")
+        else:
+            block = _metadata_block(receipt)
+            if block is None:
+                failures.append(
+                    "metadata block cannot be recomputed from the "
+                    "stored member values")
+            elif mh != _metadata_digest(block):
+                failures.append(
+                    "metadata_hash does not match the recomputed "
+                    "metadata block")
     # Optional input commitment (draft Section 3.3). The member is
     # optional and outside the core: a verifier MUST NOT require it.
     # When a receipt carries it AND its canonical payload records an

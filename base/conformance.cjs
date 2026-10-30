@@ -150,6 +150,31 @@
  * aer-1/runner-parity.py asserts byte-identical per-vector detail
  * lines across both runners so the divergence cannot regress
  * silently.
+ *
+ * -24 (kit v1.5.8): metadata binding (draft -26 Section 6 step 4;
+ * faithful port of conformance.py). check() now recomputes the
+ * Section 3.1 canonical metadata block whenever a receipt carries
+ * metadata_hash and fails on a mismatch: the block (created_at,
+ * id, output_hash, provenance_class, receipt_schema_version, and
+ * the tool object's name/scope/version; every value a string;
+ * member names sorted by code point; Section 7.1 escaping) is
+ * rebuilt from the receipt's stored member values and its SHA-256
+ * compared against the stored metadata_hash. No runner recomputed
+ * it before: a 0.4 receipt whose created_at, id, or tool version
+ * was changed after issuance passed every kit check, and
+ * aer1_verify reported the id as a label outside the commitment
+ * (Laurent Lemonnier's finding, 2026-10-29, from the DPS x AER-1
+ * composition in his dps-scitt-decision-layer repository,
+ * interop/aer1-decision). His four probes, plus the same four
+ * mutations of valid/real-04, are pinned as runner test fixtures
+ * under tests/metadata-probes/ (outside the published corpus;
+ * corpus files, counts, and digests are unchanged).
+ * valid/real-04, the corpus vector carrying a correct Section 3.1
+ * metadata_hash, is the ground truth the recomputation reproduces
+ * byte-exactly. Absence of metadata_hash is not failed: Table 1
+ * makes the member conditional and mandates recomputation
+ * whenever it is present, and the corpus pins pre-binding 0.4
+ * vectors that carry none.
  */
 const fs = require("fs");
 const path = require("path");
@@ -332,6 +357,50 @@ function canonicalJson(value) {
     return jsonAsciiV07(JSON.stringify(sortKeysDeep(value)));
 }
 
+// Rebuild the Section 3.1 canonical metadata block from a receipt's
+// stored member values: exactly created_at, id, output_hash,
+// provenance_class, receipt_schema_version, and tool (an object with
+// exactly name, scope, version), every value a JSON string. Returns
+// null when any covered member is missing or not a string; the block
+// then cannot be recomputed, and a carried metadata_hash cannot
+// confirm. Mirrors _metadata_block() in conformance.py.
+function metadataBlock(receipt) {
+    const tool = receipt["tool"];
+    if (!isObject(tool)) {
+        return null;
+    }
+    const block = {};
+    for (const key of ["created_at", "id", "output_hash",
+            "provenance_class", "receipt_schema_version"]) {
+        const value = receipt[key];
+        if (typeof value !== "string") {
+            return null;
+        }
+        block[key] = value;
+    }
+    const toolBlock = {};
+    for (const key of ["name", "scope", "version"]) {
+        const value = tool[key];
+        if (typeof value !== "string") {
+            return null;
+        }
+        toolBlock[key] = value;
+    }
+    block["tool"] = toolBlock;
+    return block;
+}
+
+// The metadata_hash value for a Section 3.1 block: "sha256:" plus
+// the lowercase hex SHA-256 of the block serialized with member
+// names sorted by Unicode code point at every object level, no
+// whitespace outside strings, and the string escaping of Section
+// 7.1 (canonicalJson). Mirrors _metadata_digest() in
+// conformance.py.
+function metadataDigest(block) {
+    const blob = Buffer.from(canonicalJson(block), "utf8");
+    return "sha256:" + crypto.createHash("sha256").update(blob).digest("hex");
+}
+
 // True for the legacy production shape minted by zambo.dev at
 // schema 0.3 (pinned by valid/legacy-real-2.json, a copy of the
 // aer1-verifier receipt-real-2 fixture): the creation time is
@@ -462,6 +531,32 @@ function check(receipt) {
         const want = "sha256:" + crypto.createHash("sha256").update(raw).digest("hex");
         if (oh !== want) {
             failures.push("output_hash does not match sha256(canonical_bytes)");
+        }
+    }
+    // Metadata binding (draft Section 6 step 4; block defined in
+    // Section 3.1). Whenever a receipt carries metadata_hash, the
+    // verifier recomputes the canonical metadata block from the
+    // receipt's stored member values and compares; a mismatch is a
+    // commitment failure, the same "verification failed" class as an
+    // output_hash mismatch. This recomputation is what binds the id,
+    // creation time, tool name, version, scope, and provenance class
+    // to the record: without it, those members could be rewritten on
+    // a stored 0.4 receipt without detection (Laurent Lemonnier's
+    // finding, 2026-10-29). Absence of the member is not failed
+    // here: Table 1 makes it conditional and mandates recomputation
+    // whenever it is present, and the pre-binding corpus vectors
+    // carry none.
+    const mh = receipt["metadata_hash"];
+    if (mh !== undefined && mh !== null) {
+        if (typeof mh !== "string" || !HASH_RE.test(mh)) {
+            failures.push("metadata_hash is not sha256: + lowercase hex digest");
+        } else {
+            const block = metadataBlock(receipt);
+            if (block === null) {
+                failures.push("metadata block cannot be recomputed from the stored member values");
+            } else if (mh !== metadataDigest(block)) {
+                failures.push("metadata_hash does not match the recomputed metadata block");
+            }
         }
     }
     // Optional input commitment (draft Section 3.3). The member is
