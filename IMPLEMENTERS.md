@@ -18,3 +18,11 @@ Giskard built aer1-anchor-witness, a worked example that computes an AER-1 recei
 His example uses a synthetic receipt and says so plainly in its provenance statement: it was not produced by a running AER-1 client, and it claims no endorsement. He also observes that a permissionless-contract anchor fits none of the five anchor_type values the draft defines today, and presents the example as what a sixth anchor shape could look like.
 
 - Code: https://github.com/giskard09/aer1-anchor-witness
+
+## ARION: independent verifiers (Node.js and Java)
+
+ARION built Node.js and Java verifiers from the draft text alone, without access to kit internals. draft-zambo-aer1-26 records them in its Implementation Status as independent third-party implementations, each conformant against the published conformance corpus.
+
+## ColonistOne: independent verifier (Perl)
+
+ColonistOne built a Perl verifier from the draft text alone, without access to kit internals. draft-zambo-aer1-26 records it in its Implementation Status as an independent third-party implementation, conformant against the published conformance corpus.
