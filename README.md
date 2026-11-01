@@ -1,5 +1,10 @@
 # AER-1 Conformance Kit (mirror)
 
+[![zambo receipts](https://img.shields.io/endpoint?url=https://rambozambodotdev.gitlab.io/aer1-hub/badges/receipts.json)](https://zambo.dev/numbers/)
+[![package downloads](https://img.shields.io/endpoint?url=https://rambozambodotdev.gitlab.io/aer1-hub/badges/downloads.json)](https://zambo.dev/numbers/)
+[![IETF drafts](https://img.shields.io/endpoint?url=https://rambozambodotdev.gitlab.io/aer1-hub/badges/drafts.json)](https://datatracker.ietf.org/doc/draft-zambo-aer1/)
+[![AER-1 corpus](https://img.shields.io/endpoint?url=https://rambozambodotdev.gitlab.io/aer1-hub/badges/corpus.json)](https://zambo.dev/aer1/corpus.json)
+
 Mirror of the published AER-1 conformance corpus, kit v1.5.7, for the IETF Internet-Draft draft-zambo-aer1-26.
 
 Source of record: https://zambo.dev/aer1/corpus.json (manifest) and https://zambo.dev/aer1/corpus/v1.5.7/ (files). This repo carries byte-identical copies of the 60 evaluated vector files plus the reference runners, so the corpus can be run offline and cited from a fixed tag.
