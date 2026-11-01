@@ -125,8 +125,21 @@
       "implementer": "giskard09",
       "merkle_vectors": "",
       "role": "independent"
+    },
+    {
+      "name": "Laurent Lemonnier's AER-1 verifier",
+      "language": "Python",
+      "status": "conformant",
+      "code_url": "https://github.com/Laurent-Lemonnier/dps-scitt-decision-layer/tree/main/interop/aer1",
+      "announcement_url": "https://github.com/Laurent-Lemonnier/dps-scitt-decision-layer/tree/main/interop/aer1",
+      "chain_vectors": "119/119",
+      "date_verified": "2026-10-29",
+      "implementer": "Laurent Lemonnier",
+      "merkle_vectors": "",
+      "role": "independent",
+      "notes": "Verifier written from the text of draft-zambo-aer1-26 alone (Sections 3-8 and 10), without reading the kit's runners; agreed with kit v1.5.7 on 119 of 119 checks across the seven base vector files, per-vector report published with the code. His review also surfaced the Section 6 step 4 metadata_hash recomputation gap, fixed in the kit at 5d1504b and credited to him."
     }
   ],
   "spec_revision": "-10",
-  "updated": "2026-10-03"
+  "updated": "2026-11-01"
 }
