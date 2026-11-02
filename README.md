@@ -37,3 +37,14 @@ Expected final line:
 - `LICENSE`: the kit license.
 
 AER-1 is the receipt format behind Zambo, the verifiable work layer for AI: every tool call returns a verifiable receipt, proof the saved result was not changed since it was saved. Spec: https://datatracker.ietf.org/doc/draft-zambo-aer1/26/
+
+## Run it, then watch the real thing run
+
+```bash
+pip install aer1kit
+```
+
+The kit is the test bench: 126 vectors, 129 checks, downloaded 5,349 times by implementers checking their own stacks against draft-zambo-aer1-26. The production system it tests against is live at https://zambo.dev/mcp, one MCP endpoint where every tool call returns an AER-1 receipt.
+
+Add Zambo to your AI in one URL, no key, no account: https://zambo.dev/add/
+Free tier: 20 calls and 1 wrap-up free every day, and picking up in another AI is always free. Need more? The $0.99 Day Pass makes it unlimited for 24 hours.
