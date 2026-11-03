@@ -140,6 +140,6 @@
       "notes": "Verifier written from the text of draft-zambo-aer1-26 alone (Sections 3-8 and 10), without reading the kit's runners; agreed with kit v1.5.7 on 119 of 119 checks across the seven base vector files, per-vector report published with the code. His review also surfaced the Section 6 step 4 metadata_hash recomputation gap, fixed in the kit at 5d1504b and credited to him."
     }
   ],
-  "spec_revision": "-10",
+  "spec_revision": "-26",
   "updated": "2026-11-01"
 }
