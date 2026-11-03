@@ -18,7 +18,7 @@ Source of record: https://zambo.dev/aer1/corpus.json (manifest) and https://zamb
 
 Python:
 
-    python3 conformance.py            # full evaluated corpus (126 vectors, 129 checks)
+    python3 conformance.py            # full evaluated corpus (143 vectors, 146 checks)
     python3 conformance.py --base-only  # base set only (119 vectors, 122 checks)
 
 Node:
@@ -27,7 +27,7 @@ Node:
 
 Expected final line:
 
-    CONFORMANCE OK: 126 vectors, 129 checks, sha256:ccaff18aba8f4e70aacf8a469403e9a6f12f025ad39df88079398bbe13100ce8
+    CONFORMANCE OK: 143 vectors, 146 checks, sha256:ccaff18aba8f4e70aacf8a469403e9a6f12f025ad39df88079398bbe13100ce8
 
 ## Layout
 
@@ -44,7 +44,7 @@ AER-1 is the receipt format behind Zambo, the verifiable work layer for AI: ever
 pip install aer1kit
 ```
 
-The kit is the test bench: 126 vectors, 129 checks, downloaded 5,349 times by implementers checking their own stacks against draft-zambo-aer1-26. The production system it tests against is live at https://zambo.dev/mcp, one MCP endpoint where every tool call returns an AER-1 receipt.
+The kit is the test bench: 143 vectors, 146 checks, downloaded 5,349 times by implementers checking their own stacks against draft-zambo-aer1-26. The production system it tests against is live at https://zambo.dev/mcp, one MCP endpoint where every tool call returns an AER-1 receipt.
 
 Add Zambo to your AI in one URL, no key, no account: https://zambo.dev/add/
 Free tier: 20 calls and 1 wrap-up free every day, and picking up in another AI is always free. Need more? The $0.99 Day Pass makes it unlimited for 24 hours.
