@@ -1,0 +1,37 @@
+name: action-selftest
+on:
+  push:
+    paths:
+      - "action.yml"
+      - ".github/workflows/action-selftest.yml"
+      - "conformance.py"
+      - "conformance.mjs"
+      - "aer-1/cross-verify/**"
+      - "base/**"
+      - "index.json"
+  workflow_dispatch:
+jobs:
+  corpus:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          mode: corpus
+  cross:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          mode: cross
+  receipt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch a real production receipt record
+        run: curl -sS "https://zambo.dev/api/receipts/5eccf113-2b01-409e-ae1f-2a64a4a5cddb" -o receipt.json
+      - uses: ./
+        with:
+          mode: receipt
+          receipt: receipt.json

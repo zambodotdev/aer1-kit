@@ -48,3 +48,23 @@ The kit is the test bench: 126 vectors, 129 checks, downloaded 5,349 times by im
 
 Add Zambo to your AI in one URL, no key, no account: https://zambo.dev/add/
 Free tier: 20 calls and 1 wrap-up free every day, and picking up in another AI is always free. Need more? The $0.99 Day Pass makes it unlimited for 24 hours.
+
+## Use AER-1 Verify in your CI
+
+This repo is also a GitHub Action. Run the full conformance corpus in your pipeline:
+
+```yaml
+- uses: actions/checkout@v4
+- uses: zambodotdev/aer1-kit@v1
+  with:
+    mode: corpus
+```
+
+Modes: `corpus` runs every vector in the kit (143 vectors, 146 checks) and fails on any mismatch. `cross` runs the cross-implementation agreement matrix and writes it to the job summary. `receipt` verifies one AER-1 receipt JSON file offline, with no trust in any server:
+
+```yaml
+- uses: zambodotdev/aer1-kit@v1
+  with:
+    mode: receipt
+    receipt: path/to/receipt.json
+```

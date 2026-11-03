@@ -1,0 +1,39 @@
+name: "AER-1 Verify"
+description: "Verify AER-1 verifiable execution receipts offline, or run the full AER-1 conformance corpus (draft-zambo-aer1-26) in your CI."
+author: "Zambo"
+branding:
+  icon: "check-circle"
+  color: "green"
+inputs:
+  mode:
+    description: "corpus (run the conformance corpus), cross (cross-implementation agreement matrix), or receipt (verify one receipt JSON file)"
+    required: false
+    default: "corpus"
+  receipt:
+    description: "Path to a receipt JSON file. Required when mode is receipt."
+    required: false
+    default: ""
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.x"
+    - name: Run the AER-1 conformance corpus
+      if: inputs.mode == 'corpus'
+      shell: bash
+      run: python3 "${{ github.action_path }}/conformance.py"
+    - name: Run the cross-implementation agreement matrix
+      if: inputs.mode == 'cross'
+      shell: bash
+      run: |
+        mkdir -p "${{ runner.temp }}/aer1-cross"
+        python3 "${{ github.action_path }}/aer-1/cross-verify/cross_verify.py" --out "${{ runner.temp }}/aer1-cross"
+        cat "${{ runner.temp }}/aer1-cross/MATRIX.md" >> "$GITHUB_STEP_SUMMARY"
+    - name: Verify one AER-1 receipt offline
+      if: inputs.mode == 'receipt'
+      shell: bash
+      run: |
+        if [ -z "${{ inputs.receipt }}" ]; then echo "mode=receipt requires the receipt input"; exit 2; fi
+        pip install "aer1-verify==0.2.22"
+        aer1-verify "${{ inputs.receipt }}"
