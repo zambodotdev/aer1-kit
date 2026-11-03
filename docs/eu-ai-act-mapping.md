@@ -85,7 +85,7 @@ none of them should be mistaken for compliance.
   traceability appropriate to the purpose; they do not prescribe a
   provenance vocabulary.
 - **A conformance corpus.** AER-1 ships with a public test corpus
-  (126 vectors, 129 checks) and independent implementations, so the
+  (143 vectors, 146 checks) and independent implementations, so the
   claim "this producer emits AER-1 records" is itself testable
   against fixed vectors rather than asserted.
 
@@ -115,5 +115,5 @@ none of them should be mistaken for compliance.
 - draft-zambo-aer1-26, "AER-1: Agent Execution Receipts", Sections 3
   to 10, IETF Datatracker:
   https://datatracker.ietf.org/doc/draft-zambo-aer1/26/
-- AER-1 conformance corpus and kit (126 vectors, 129 checks, kit
+- AER-1 conformance corpus and kit (143 vectors, 146 checks, kit
   v1.5.7): https://zambo.dev/aer1/corpus.json
