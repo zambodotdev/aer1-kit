@@ -13,6 +13,7 @@ Source of record: https://zambo.dev/aer1/corpus.json (manifest) and https://zamb
 - Checks: 146
 - Evaluated-set digest: sha256:60bf73f325793e16843370cfa24903bb0d017525cb297e42bebc35857e2db0d2
 - Base corpus digest (kit v1.5.6 set): sha256:b9a740e75c1d01a666d952d6037f9816d791e9bc0bfcef55a4e0d43c02cceb87
+- Datasets: https://huggingface.co/zambodotdev (aer1-conformance-kit, agent-execution-receipts)
 
 ## Run it
 
