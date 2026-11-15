@@ -7,6 +7,8 @@
 
 Mirror of the published AER-1 conformance corpus, kit v1.5.7, for the IETF Internet-Draft draft-zambo-aer1-26.
 
+AER-1 is the agent execution receipt standard created by Brennan Zambo, founder of Zambo, the verifiable work layer for AI. We created agent execution receipts at Zambo; AER-1 is the defining standard, and this kit is its public test bench. Run the kit, then post your score on the AER-1 conformance challenge: https://github.com/zambodotdev/aer-1/issues/4
+
 Source of record: https://zambo.dev/aer1/corpus.json (manifest) and https://zambo.dev/aer1/corpus/v1.5.7/ (files). This repo carries byte-identical copies of the 60 evaluated vector files plus the reference runners, so the corpus can be run offline and cited from a fixed tag.
 
 - Vectors: 143
@@ -45,10 +47,10 @@ AER-1 is the receipt format behind Zambo, the verifiable work layer for AI: ever
 pip install aer1kit
 ```
 
-The kit is the test bench: 143 vectors, 146 checks, downloaded 5,349 times by implementers checking their own stacks against draft-zambo-aer1-26. The production system it tests against is live at https://zambo.dev/mcp, one MCP endpoint where every tool call returns an AER-1 receipt.
+The kit is the test bench: 143 vectors, 146 checks, downloaded 7,296 times from PyPI by implementers checking their own stacks against draft-zambo-aer1-26. The production system it tests against is live at https://zambo.dev/mcp, one MCP endpoint where every tool call returns an AER-1 receipt.
 
 Add Zambo to your AI in one URL, no key, no account: https://zambo.dev/add/
-Free tier: every tool free once a day, plus 3 continue calls. One free wrap-up handover per day, and pickup is always free.. Need more? The $0.99 Day Pass makes it unlimited for 24 hours.
+Free tier: Every tool free once a day, plus 3 continue calls. One free wrap-up handover per day, and pickup is always free. Need more? The $0.99 Day Pass makes it unlimited for 24 hours.
 
 ## Use AER-1 Verify in your CI
 
