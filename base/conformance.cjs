@@ -1431,11 +1431,16 @@ function checkCommitmentVectors() {
     let corpus;
     try {
         const rawText = fs.readFileSync(p, "utf8");
-        // Detect entry_count written as float (e.g. 5.0): JS JSON.parse
-        // loses the int/float distinction, so mark them for rejection.
-        // This mirrors Python's isinstance(count, int) check.
+        // Detect entry_count written as a non-plain-integer number
+        // (fraction and/or exponent form: 5.0, 5e0, 5.0e0, -5.0): JS
+        // JSON.parse loses the int/float distinction, so mark them for
+        // rejection. The token pattern must consume the whole JSON
+        // number, or the replacement corrupts the text. This mirrors
+        // Python's isinstance(count, int) check, which rejects every
+        // float form. Plain integers (5, -0, 7) stay unmarked, exactly
+        // as Python parses them as int.
         const floatMarker = rawText.replace(
-            /("entry_count"\s*:\s*)(\d+\.\d+)/g,
+            /("entry_count"\s*:\s*)(-?\d+(?:\.\d+(?:[eE][+-]?\d+)?|[eE][+-]?\d+))/g,
             '$1{"__float__": $2}'
         );
         corpus = JSON.parse(floatMarker);
