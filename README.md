@@ -55,7 +55,7 @@ pip install aer1kit
 
 The `aer1kit` PyPI package is the mint and verify library; it does not carry the corpus or the runners, so run the conformance corpus from this clone.
 
-The kit is the test bench: 143 vectors, 146 checks, downloaded 7,911 times from PyPI by implementers checking their own stacks against draft-zambo-aer1-26. The production system it tests against is live at https://zambo.dev/mcp, one MCP endpoint where every tool call returns an AER-1 receipt.
+The kit is the test bench: 143 vectors, 146 checks, downloaded 8,320 times from PyPI by implementers checking their own stacks against draft-zambo-aer1-26. The production system it tests against is live at https://zambo.dev/mcp, one MCP endpoint where every tool call returns an AER-1 receipt.
 
 Add Zambo to your AI in one URL, no key, no account: https://zambo.dev/add/
 Free tier: Every tool free once a day, plus 3 continue calls. One free wrap-up handover per day, and pickup is always free. Need more? The $0.99 Day Pass makes it unlimited for 24 hours.
