@@ -4,7 +4,7 @@ Independent work built from the AER-1 draft text and the published conformance c
 
 ## Laurent Lemonnier: from-the-text verifier (Python)
 
-Laurent Lemonnier (iSoluce) wrote a verifier from the text of draft-zambo-aer1-26 alone (Sections 3 to 8 and 10), without reading this kit's runners, and ran it against the kit at v1.5.7. Result: 119 of 119 checks agreed across the seven base vector files, with a per-vector report published alongside the code.
+Laurent Lemonnier (iSoluce) wrote a verifier from the text of draft-zambo-aer1-26 alone (Sections 3 to 8 and 10), without reading this kit's runners, and ran it against the kit at v1.5.7. Result: 143 of 143 vectors agreed across the full published corpus (kit v1.5.7, reinforced set), with a per-vector report published alongside the code.
 
 - Code and report: https://github.com/Laurent-Lemonnier/dps-scitt-decision-layer/tree/main/interop/aer1
 - His related draft: draft-lemonnier-scitt-decision-provenance (a record of a human decision placed above execution evidence such as an AER-1 receipt)
