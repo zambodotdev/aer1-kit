@@ -13,11 +13,9 @@ git clone https://github.com/zambodotdev/aer1-kit
 cd aer1-kit
 ```
 
-The Python runner uses only the standard library. The Node runner, `conformance.mjs`, is the alternative. The kit is also published on PyPI:
+The Python runner uses only the standard library. The Node runner, `conformance.mjs`, is the alternative.
 
-```bash
-pip install aer1kit
-```
+The conformance run needs this clone: the corpus and the runners live here, not in the PyPI package. The `aer1kit` package on PyPI is a separate mint and verify library (a receipt emitter plus an offline `verify_receipt` helper); installing it does not install the corpus or the conformance runners.
 
 ## 2. Know the corpus you are about to run
 
@@ -28,6 +26,14 @@ The source of record for the corpus is the manifest at https://zambo.dev/aer1/co
 - Evaluated-set digest: sha256:60bf73f325793e16843370cfa24903bb0d017525cb297e42bebc35857e2db0d2
 
 The repo manifest is `index.json`. Before any vector is evaluated, the top-level runner compares the files on disk against that manifest: the evaluated file inventory, the sha256 of every file, and the vector and check counts all have to match, or the run stops with an error instead of producing a score.
+
+To check the clone against the source of record, fetch the live manifest and compare its `vector_count`, `check_count`, and `evaluated_set_digest` fields against the pinned values above:
+
+```bash
+curl -s https://zambo.dev/aer1/corpus.json
+```
+
+They must match exactly. If they do not, re-clone before running.
 
 ## 3. Run it
 
@@ -43,11 +49,13 @@ Node:
 node conformance.mjs
 ```
 
-To run only the base set (119 vectors, 122 checks):
+The top-level runners take no flags: any argument is ignored and the full corpus runs. To run only the base set (135 vectors, 138 checks, the files under `base/`), run the base runner directly:
 
 ```bash
-python3 conformance.py --base-only
+python3 base/conformance.py
 ```
+
+Node equivalent: `node base/conformance.cjs`. A passing base-only run ends with `CONFORMANCE OK: all vectors behave as expected.` and prints no count or digest line; the count and digest verdict belongs to the full top-level run in section 5.
 
 ## 4. Read the per-check results
 
@@ -55,16 +63,23 @@ The base runner prints one line per check, grouped by family. Each line names th
 
 ```text
 [valid]   receipt-01.json: PASS
-[invalid] hash-mismatch.json: PASS
+[invalid] hash-mismatch.json: PASS (rejected: <reason>)
+[profile-invalid] <vector name>: PASS (<detail>)
 [chain]  <vector name>: PASS
+[chain-v07] <vector name>: PASS
 [merkle]  <vector name>: PASS
+[merkle-workflow] <vector name>: PASS
+[commitment] <vector name>: PASS
 [unicode] <vector name>: PASS
+[id-binding] <vector name>: PASS (<detail>)
 [anchor]  <vector name>: PASS (<detail>)
+[anchored] <vector name>: PASS (<detail>)
 ```
 
 Read the families by what they prove:
 
 - `valid` and `invalid`: well-formed receipts are accepted, and malformed ones are refused for the reason the vector encodes. For an `invalid` vector, PASS means your reading of the kit is correct when the receipt is rejected.
+- `profile-invalid`: the receipt passes the core checks and is refused by the stricter profile the vector encodes.
 - `chain`, `chain-v07`, and `merkle` / `merkle-workflow`: hash chains and Merkle roots recompute to the expected values.
 - `commitment`, `unicode`, and `id-binding`: commitments verify, Unicode handling matches the corpus, and receipt ids bind to the records they name.
 - `anchor` and `anchored`: anchored receipts resolve to their stated outcomes. An unevaluated anchor never gets an evaluated outcome.
