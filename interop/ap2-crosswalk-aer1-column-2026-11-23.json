@@ -1,0 +1,573 @@
+{
+ "format": "aer1-ap2-crosswalk-column-1",
+ "judged": "2026-11-23",
+ "judged_by": "AER-1 record layer (zambodotdev), for the AP2 issue #402 crosswalk with AMEP",
+ "object_of_judgment": "the RECORD (chain + receipt as saved in the fixture), never the mandate decision",
+ "dictionary": [
+  "verified",
+  "verification failed",
+  "rejected: unresolvable record",
+  "not checked",
+  "absent"
+ ],
+ "definitions": {
+  "verified": "every digest binding in the record recomputes from the bytes in the bundle: the receipt reference against the closed mandate, the closed hop binding against the open mandate, and every presented disclosure against the digest committed to it",
+  "verification failed": "material is present but a digest binding does not recompute",
+  "absent": "the bundle names a payment and carries no receipt for it",
+  "not checked": "the bundle does not carry the bytes a recompute needs",
+  "rejected: unresolvable record": "not used in this run; every record in the fixtures could be resolved to a judgment"
+ },
+ "method": "hand-traced from the fixture JSON; all digests recomputed with SHA-256 over the exact ASCII bytes as they appear in the fixture files; no counterparty code executed",
+ "inputs": {
+  "amep_column": "https://github.com/stafordtituss/amep/blob/main/interop/ap2/verdicts.json",
+  "amep_column_sha256": "93aa9005beb32af0f1ba51666b45627b24b9c004da438c488af9d818fbf99b10",
+  "sdk_fixture_sha256": "7e1dd6d97003d11f61ee2b60625bc1fff282d9a5f1eaa7426b276bbd3140b61f",
+  "synthetic_fixture_sha256": "bd530228cb9880d33f49016ab85f426a6c0e9668f3b6e47734b4aa779a71c4fc"
+ },
+ "reference_rules": {
+  "sdk_rule": "reference = base64url(SHA-256(closed hop JWT alone))",
+  "spec_rule": "reference = base64url(SHA-256(closed SD-JWT presentation with disclosures, sd_hash manner))"
+ },
+ "families": {
+  "sdk": {
+   "sdk-within": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 19900,
+      "receipts_for_payment": [
+       {
+        "status": "Success",
+        "payment_id": "1ef62c50-1c7b-4a31-9e02-91d3fc475f87",
+        "reference": "5O-314PD49A6lClDD38ORMlUwFX4azQRJfAFbvRN7ig",
+        "reference_rule_matched": "sdk"
+       }
+      ],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": "sdk",
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "verified",
+      "join_vs_amep": "agree",
+      "amep_outcome": "preserved"
+     }
+    ]
+   },
+   "sdk-over-range": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 25000,
+      "receipts_for_payment": [
+       {
+        "status": "Success",
+        "payment_id": "0e40ec95-5c3d-401e-8275-a5528646f57c",
+        "reference": "K5iWMENk5jsKtueA4wq7t50Z6IGIZHNpT7YwjjImkH0",
+        "reference_rule_matched": "sdk"
+       }
+      ],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": "sdk",
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "verified",
+      "join_vs_amep": "diverge-scope",
+      "amep_outcome": "violated"
+     }
+    ]
+   },
+   "sdk-wrong-payee": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 19900,
+      "receipts_for_payment": [
+       {
+        "status": "Success",
+        "payment_id": "c6c3a5c6-24d7-4846-9acb-1e1880678048",
+        "reference": "oho5TSSwPypAh_mLg8gjttbBefebb_Jmy5Jxzbc3CKI",
+        "reference_rule_matched": "sdk"
+       }
+      ],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": "sdk",
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "verified",
+      "join_vs_amep": "diverge-scope",
+      "amep_outcome": "violated"
+     }
+    ]
+   },
+   "sdk-declined": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 19900,
+      "receipts_for_payment": [
+       {
+        "status": "Error",
+        "payment_id": "6e190af6-e204-4e43-81c0-a5753e6210b7",
+        "reference": "sOztsteqR3G_WEHcgut93ZYbbJP57uhTGupwYbCpQ_I",
+        "reference_rule_matched": "sdk"
+       }
+      ],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": "sdk",
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "verified",
+      "join_vs_amep": "agree",
+      "amep_outcome": "preserved"
+     }
+    ]
+   },
+   "sdk-lost-receipt": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 19900,
+      "receipts_for_payment": [],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": null,
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "absent",
+      "join_vs_amep": "agree",
+      "amep_outcome": "unresolved"
+     }
+    ]
+   },
+   "sdk-budget": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 19900,
+      "receipts_for_payment": [
+       {
+        "status": "Success",
+        "payment_id": "87339a50-22e2-4807-b3bf-468690d4937d",
+        "reference": "3lirY8RnVHOwkxgAUKf5e_3d6xkO8SSBhtR5D9YYta0",
+        "reference_rule_matched": "sdk"
+       }
+      ],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": "sdk",
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "verified",
+      "join_vs_amep": "agree",
+      "amep_outcome": "preserved"
+     },
+     {
+      "payment": 2,
+      "transaction_id": "txn-2",
+      "amount_minor": 15000,
+      "receipts_for_payment": [
+       {
+        "status": "Success",
+        "payment_id": "be9077c6-face-45d8-a712-512e71a64a86",
+        "reference": "aEE5Gkp7TxQCHDeSQV2B-RgoBRO1jrn55I8w9lp-jds",
+        "reference_rule_matched": "sdk"
+       }
+      ],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": "sdk",
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "verified",
+      "join_vs_amep": "diverge-scope",
+      "amep_outcome": "violated"
+     }
+    ]
+   },
+   "sdk-issuer-jwt-hash": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 19900,
+      "receipts_for_payment": [
+       {
+        "status": "Success",
+        "payment_id": "e48100df-c0e8-49e0-b19e-dcaff299c2ca",
+        "reference": "q8SRSjKu3agIXRz6VSDTMQV2LuF5wIT4BhQYqvXYpNo",
+        "reference_rule_matched": "sdk"
+       }
+      ],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": "sdk",
+      "chain_binding": "issuer_jwt_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "verified",
+      "join_vs_amep": "agree",
+      "amep_outcome": "preserved"
+     }
+    ]
+   },
+   "sdk-redeemed-twice": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 5000,
+      "receipts_for_payment": [
+       {
+        "status": "Success",
+        "payment_id": "9df6fcb1-8709-4f37-b707-25bacb28f5e5",
+        "reference": "hGELfasgUwLm_Nd-3sV2YYcZj7nHwj-DsNJvwXr49nQ",
+        "reference_rule_matched": "sdk"
+       },
+       {
+        "status": "Success",
+        "payment_id": "3e02156a-8416-4141-8f0c-358f1b920e11",
+        "reference": "hGELfasgUwLm_Nd-3sV2YYcZj7nHwj-DsNJvwXr49nQ",
+        "reference_rule_matched": "sdk"
+       }
+      ],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": "sdk",
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "verified",
+      "join_vs_amep": "diverge-scope",
+      "amep_outcome": "violated"
+     }
+    ]
+   }
+  },
+  "synthetic": {
+   "s1-within": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 19900,
+      "receipts_for_payment": [
+       {
+        "status": "Success",
+        "payment_id": "pay-1",
+        "reference": "h6cfmLeaytEX1nbzU154ZUajl96VldB7C7hwppuUHN8",
+        "reference_rule_matched": "sdk"
+       }
+      ],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": "sdk",
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "verified",
+      "join_vs_amep": "agree",
+      "amep_outcome": "preserved"
+     }
+    ]
+   },
+   "s2-over-range": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 25000,
+      "receipts_for_payment": [
+       {
+        "status": "Success",
+        "payment_id": "pay-1",
+        "reference": "uZKTK6ZwE7ZcKBpS8HrUwfqtKm804F4VtwoicL8fhGs",
+        "reference_rule_matched": "sdk"
+       }
+      ],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": "sdk",
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "verified",
+      "join_vs_amep": "diverge-scope",
+      "amep_outcome": "violated"
+     }
+    ]
+   },
+   "s3-wrong-payee": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 19900,
+      "receipts_for_payment": [
+       {
+        "status": "Success",
+        "payment_id": "pay-1",
+        "reference": "67tOa5Cm0QaZeWe2Yp8SMJUodH7eslZUSbSY-sLWk4w",
+        "reference_rule_matched": "sdk"
+       }
+      ],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": "sdk",
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "verified",
+      "join_vs_amep": "diverge-scope",
+      "amep_outcome": "violated"
+     }
+    ]
+   },
+   "s4-declined": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 19900,
+      "receipts_for_payment": [
+       {
+        "status": "Error",
+        "payment_id": "pay-1",
+        "reference": "Fcl_RoNFtDftTZ3LIYPYRWWoB1y7eRGMNXkajQyNzHY",
+        "reference_rule_matched": "sdk"
+       }
+      ],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": "sdk",
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "verified",
+      "join_vs_amep": "agree",
+      "amep_outcome": "preserved"
+     }
+    ]
+   },
+   "s5-lost-receipt": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 19900,
+      "receipts_for_payment": [],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": null,
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "absent",
+      "join_vs_amep": "agree",
+      "amep_outcome": "unresolved"
+     }
+    ]
+   },
+   "s6-budget": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 19900,
+      "receipts_for_payment": [
+       {
+        "status": "Success",
+        "payment_id": "pay-1",
+        "reference": "wnmtcEWLXanw0WQATkV4wBJiLny_8kqW07Lx-jEZ6DM",
+        "reference_rule_matched": "sdk"
+       }
+      ],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": "sdk",
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "verified",
+      "join_vs_amep": "agree",
+      "amep_outcome": "preserved"
+     },
+     {
+      "payment": 2,
+      "transaction_id": "txn-2",
+      "amount_minor": 15000,
+      "receipts_for_payment": [
+       {
+        "status": "Success",
+        "payment_id": "pay-2",
+        "reference": "nuUJkVDj5lydhETsggaBRAx64xQ31M_lMEzCJOnMRUw",
+        "reference_rule_matched": "sdk"
+       }
+      ],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": "sdk",
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "verified",
+      "join_vs_amep": "diverge-scope",
+      "amep_outcome": "violated"
+     }
+    ]
+   },
+   "s7-receipt-for-another-mandate": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 19900,
+      "receipts_for_payment": [],
+      "unbound_receipts_in_bundle": [
+       {
+        "status": "Success",
+        "payment_id": "pay-1",
+        "reference": "ABeP6w0cmydJyUZKkRgbcW9S20-iKML_16I1MacuJ30",
+        "reference_rule_matched": "neither"
+       }
+      ],
+      "reference_rule_matched": "neither",
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "verification failed",
+      "join_vs_amep": "diverge-kind",
+      "amep_outcome": "unresolved"
+     }
+    ]
+   },
+   "s8-altered-amount": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 9900,
+      "receipts_for_payment": [
+       {
+        "status": "Success",
+        "payment_id": "pay-1",
+        "reference": "rXK1tCYiTqY5hSsr7POL4jZRuarWi-DlStCC6KW62Z8",
+        "reference_rule_matched": "sdk"
+       }
+      ],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": "sdk",
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": false,
+      "aer1_outcome": "verification failed",
+      "join_vs_amep": "diverge-kind",
+      "amep_outcome": "unresolved",
+      "transaction_id_source": "closed hop disclosure as presented; the AMEP column prints no transaction_id for this bundle (its mapping failed on the altered disclosure)"
+     }
+    ]
+   },
+   "s10-redeemed-twice": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 15000,
+      "receipts_for_payment": [
+       {
+        "status": "Success",
+        "payment_id": "pay-1",
+        "reference": "zMRLthjfwhpuJvapbArG3HrF7BnfdSYIo-TowqvPMR0",
+        "reference_rule_matched": "sdk"
+       },
+       {
+        "status": "Success",
+        "payment_id": "pay-2",
+        "reference": "zMRLthjfwhpuJvapbArG3HrF7BnfdSYIo-TowqvPMR0",
+        "reference_rule_matched": "sdk"
+       }
+      ],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": "sdk",
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "verified",
+      "join_vs_amep": "diverge-scope",
+      "amep_outcome": "violated"
+     }
+    ]
+   },
+   "s11-redeemed-twice-small": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 5000,
+      "receipts_for_payment": [
+       {
+        "status": "Success",
+        "payment_id": "pay-1",
+        "reference": "78DfgtfoRKsjxKZmK2U7eBzTvSAiwGI6DyL-GE4eUso",
+        "reference_rule_matched": "sdk"
+       },
+       {
+        "status": "Success",
+        "payment_id": "pay-2",
+        "reference": "78DfgtfoRKsjxKZmK2U7eBzTvSAiwGI6DyL-GE4eUso",
+        "reference_rule_matched": "sdk"
+       }
+      ],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": "sdk",
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "verified",
+      "join_vs_amep": "diverge-scope",
+      "amep_outcome": "violated"
+     }
+    ]
+   },
+   "s9-unknown-then-second": {
+    "payments": [
+     {
+      "payment": 1,
+      "transaction_id": "txn-1",
+      "amount_minor": 19900,
+      "receipts_for_payment": [],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": null,
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "absent",
+      "join_vs_amep": "agree",
+      "amep_outcome": "unresolved"
+     },
+     {
+      "payment": 2,
+      "transaction_id": "txn-2",
+      "amount_minor": 15000,
+      "receipts_for_payment": [
+       {
+        "status": "Success",
+        "payment_id": "pay-2",
+        "reference": "mtTmSTZVwFIkma5tCSo36mn6gsTSPn59suSDK0q-IUE",
+        "reference_rule_matched": "sdk"
+       }
+      ],
+      "unbound_receipts_in_bundle": [],
+      "reference_rule_matched": "sdk",
+      "chain_binding": "sd_hash",
+      "chain_binding_recomputes": true,
+      "disclosure_integrity": true,
+      "aer1_outcome": "verified",
+      "join_vs_amep": "diverge-scope",
+      "amep_outcome": "unresolved"
+     }
+    ]
+   }
+  }
+ }
+}
