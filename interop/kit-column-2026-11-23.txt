@@ -1,0 +1,149 @@
+[valid]   bound-04.json: PASS
+[valid]   deep-nesting.json: PASS
+[valid]   edge-numbers.json: PASS
+[valid]   empty-members.json: PASS
+[valid]   feb29-leap.json: PASS (legacy notice)
+[valid]   fraction-one-digit.json: PASS (legacy notice)
+[valid]   input-hash-multikey-20.json: PASS
+[valid]   large-payload.json: PASS
+[valid]   legacy-02.json: PASS (legacy notice)
+[valid]   legacy-03.json: PASS (legacy notice)
+[valid]   legacy-real-2.json: PASS (legacy notice)
+[valid]   maximum-offset-timestamp.json: PASS
+[valid]   metadata-hash-non-ascii-tool.json: PASS
+[valid]   optional-members-18.json: PASS
+[valid]   real-04.json: PASS
+[valid]   real-1-bare.json: PASS (legacy notice)
+[valid]   receipt-01.json: PASS (legacy notice)
+[valid]   receipt-02.json: PASS (legacy notice)
+[valid]   receipt-03-live.json: PASS (legacy notice)
+[valid]   typographic-unicode.json: PASS
+[valid]   uuid-v1-core.json: PASS
+[invalid] ax-base64-unpadded.json: PASS (rejected: canonical_bytes is not valid base64)
+[invalid] ax-feb29-1900.json: PASS (rejected: created_at is not a valid calendar date/time)
+[invalid] ax-feb29-non-leap.json: PASS (rejected: created_at is not a valid calendar date/time)
+[invalid] ax-tool-empty-scope.json: PASS (rejected: tool is not an object with name/version/scope strings)
+[invalid] bad-created-at.json: PASS (rejected: created_at is not RFC 3339)
+[invalid] bad-id.json: PASS (rejected: id is not a lowercase UUID)
+[invalid] bad-offset-range.json: PASS (rejected: created_at is not a valid calendar date/time)
+[invalid] bad-provenance.json: PASS (rejected: provenance_class is not a known class)
+[invalid] bad-verification-status.json: PASS (rejected: verification_status is not verified)
+[invalid] base64-pad-bit.json: PASS (rejected: canonical_bytes is not the canonical base64 spelling)
+[invalid] base64-unpadded.json: PASS (rejected: canonical_bytes is not valid base64)
+[invalid] bytes-not-base64.json: PASS (rejected: canonical_bytes is not valid base64)
+[invalid] duplicate-member-name.json: PASS (rejected: duplicate member name: output_hash)
+[invalid] feb29-1900.json: PASS (rejected: created_at is not a valid calendar date/time)
+[invalid] feb29-non-leap.json: PASS (rejected: created_at is not a valid calendar date/time)
+[invalid] hash-bad-format.json: PASS (rejected: output_hash is not sha256: + lowercase hex digest)
+[invalid] hash-mismatch.json: PASS (rejected: output_hash does not match sha256(canonical_bytes))
+[invalid] id-trailing-newline.json: PASS (rejected: id is not a lowercase UUID)
+[invalid] impossible-date.json: PASS (rejected: created_at is not a valid calendar date/time)
+[invalid] input-hash-key-order-20.json: PASS (rejected: input_hash does not match sha256(canonical JSON of the recorded inputs))
+[invalid] input-hash-mismatch.json: PASS (rejected: input_hash does not match sha256(canonical JSON of the recorded inputs))
+[invalid] leap-second-created-at.json: PASS (rejected: created_at is not a valid calendar date/time)
+[invalid] lowercase-timestamp.json: PASS (rejected: created_at is not RFC 3339)
+[invalid] missing-output-hash.json: PASS (rejected: missing required member: output_hash)
+[invalid] nil-uuid.json: PASS (rejected: id is the nil UUID)
+[invalid] non-utf8-bytes.json: PASS (rejected: canonical_bytes is not valid UTF-8)
+[invalid] payload-is-array.json: PASS (rejected: receipt_schema_version: one side missing (outer="0.4" committed=null))
+[invalid] payload-omits-issuer-claims.json: PASS (rejected: provenance binding: one side missing (outer="EXECUTED BY ZAMBO" committed=null))
+[invalid] provenance-control-char.json: PASS (rejected: provenance_class is not a known class)
+[invalid] provenance-trailing-newline.json: PASS (rejected: provenance_class is not a known class)
+[invalid] tampered-provenance.json: PASS (rejected: provenance binding: outer "LOGGED BY AGENT" does not match committed "EXECUTED BY ZAMBO")
+[invalid] timestamp-no-timezone.json: PASS (rejected: created_at is not RFC 3339)
+[invalid] tool-empty-name.json: PASS (rejected: tool is not an object with name/version/scope strings)
+[invalid] tool-not-object.json: PASS (rejected: tool is not an object with name/version/scope strings)
+[invalid] uppercase-id.json: PASS (rejected: id is not a lowercase UUID)
+[invalid] version-downgrade.json: PASS (rejected: receipt_schema_version: outer "0.3" does not match committed "0.4")
+[profile-invalid] missing-inputs.json: PASS (core accepted, profile rejected: reference-producer payload omits the 'inputs' member)
+[anchored] anchored-bad-id-version.json: PASS (outcome: verification failed) (tier: id is not a UUID v4 (strict profile))
+[anchored] anchored-bad-leaf-hash.json: PASS (outcome: verification failed) (tier: anchor.leaf_hash does not match canonical_bytes)
+[anchored] anchored-bad-timestamp.json: PASS (outcome: verification failed) (tier: anchor.anchored_at is not a valid calendar date/time)
+[anchored] anchored-missing-proof.json: PASS (outcome: verification failed) (tier: anchor has members other than log/leaf_hash/anchored_at/proof)
+[anchored] anchored-unresolvable-anchor.json: PASS (outcome: rejected: unresolvable record)
+[anchored] anchored-valid.json: PASS (outcome: verified)
+[merkle]  canonical-5-step: PASS
+[merkle-workflow] canonical-5-step: PASS
+[merkle]  legacy-construction-rejected: PASS
+[merkle]  odd-duplication-3: PASS
+[merkle]  ordering-matters: PASS
+[merkle]  single-leaf: PASS
+[merkle]  empty: PASS
+[merkle]  worked-example-byte-exact: PASS
+[merkle]  duplicate-receipt-id-collision: PASS
+[merkle-workflow] duplicate-receipt-id-collision: PASS
+[merkle]  one-step-single-receipt: PASS
+[merkle-workflow] one-step-single-receipt: PASS
+[chain]  chain-valid-3: PASS
+[chain]  chain-single-entry-valid: PASS
+[chain]  chain-tampered-middle: PASS
+[chain]  chain-truncated-no-close: PASS
+[chain]  chain-reordered: PASS
+[chain]  chain-bad-genesis: PASS
+[chain]  chain-close-wrong-type: PASS
+[chain-v07] v07-valid-5: PASS
+[chain-v07] v07-valid-single: PASS
+[chain-v07] v07-truncation-limit-prefix: PASS
+[chain-v07] v07-relabel-provenance: PASS
+[chain-v07] v07-relabel-tool-id: PASS
+[chain-v07] v07-close-middle: PASS
+[chain-v07] v07-close-wrong-type: PASS
+[chain-v07] v07-delete-identical-pair: PASS
+[chain-v07] v07-insert-duplicate: PASS
+[chain-v07] v07-splice-cross-job: PASS
+[chain-v07] v07-bad-genesis: PASS
+[chain-v07] v07-seq-gap: PASS
+[chain-v07] v07-mixed-job-id: PASS
+[chain-v07] v07-bad-base64: PASS
+[chain-v07] v07-v06-chain-rejected: PASS
+[chain-v07] v07-seq-float-valid: PASS
+[chain-v07] v07-seq-bool-invalid: PASS
+[chain-v07] v07-seq-fraction-invalid: PASS
+[chain-v07] v07-seq-negative-invalid: PASS
+[chain-v07] v07-seq-string-invalid: PASS
+[chain-v07] v07-seq-null-invalid: PASS
+[chain-v07] v07-seq-missing-invalid: PASS
+[chain-v07] x-genesis-single: PASS
+[chain-v07] x-encoding-reference: PASS
+[chain-v07] x-encoding-draft-literal: PASS
+[chain-v07] ax-genesis-single: PASS
+[chain-v07] ax-esc-hex-upper: PASS
+[chain-v07] ax-esc-long-escape: PASS
+[commitment] commit-valid-1: PASS
+[commitment] commit-digest-mismatch: PASS
+[commitment] commit-count-mismatch: PASS
+[commitment] commit-job-mismatch: PASS
+[commitment] commit-malformed-missing: PASS
+[commitment] commit-malformed-types: PASS
+[commitment] commit-not-an-object: PASS
+[commitment] x-entry-count-float: PASS
+[unicode] unicode-nfc-form: PASS
+[unicode] unicode-nfd-form: PASS
+[unicode] unicode-nfd-against-nfc-commitment: PASS
+[unicode] unicode-narrow-nbsp-curly-quote: PASS
+[unicode] unicode-nonbreaking-hyphen-against-ascii: PASS
+[id-binding] id-alone-unverified: PASS (id_state=unverified, id_verdict=unverified)
+[id-binding] id-expected-match: PASS (id_state=verified-expected, id_verdict=matched)
+[id-binding] id-expected-mismatch: PASS (id_state=mismatch, id_verdict=mismatched)
+[id-binding] id-resolution-agreement: PASS (id_state=verified-resolved, id_verdict=resolved)
+[id-binding] id-resolution-disagreement: PASS (id_state=mismatch, id_verdict=mismatched)
+[id-binding] id-absent: PASS (id_state=unverified, id_verdict=absent)
+[anchor] anchor-resolves: PASS (present=true, evaluated=true, outcome=verified)
+[anchor] anchor-unresolvable: PASS (present=true, evaluated=true, outcome=rejected: unresolvable record)
+[anchor] anchor-not-checked: PASS (present=true, evaluated=false, outcome=not checked)
+[anchor] anchor-verification-failed: PASS (present=true, evaluated=true, outcome=verification failed)
+[anchor] anchor-absent: PASS (present=false, evaluated=false, outcome=absent)
+[anchor] anchor-other-profile: PASS (present=false, evaluated=false, outcome=absent)
+[anchor] anchor-unresolvable-bad-leaf: PASS (present=true, evaluated=true, outcome=rejected: unresolvable record)
+[anchor] anchor-partial-profile: PASS (present=true, evaluated=true, outcome=verification failed)
+
+Base expectations passed.
+[workflow-root] legacy-receipt-id-v0-mixed-version: PASS
+[workflow-root] seq-output-v1-single-step: PASS
+[workflow-root] seq-output-v1-multi-step: PASS
+[workflow-root] seq-output-v1-odd-level-duplicates-last: PASS
+[workflow-root] seq-output-v1-multi-step-odd-levels: PASS
+[workflow-root] xversion-seq-output-v1-evaluated-as-receipt-id-v0: PASS
+[workflow-root] xversion-receipt-id-v0-evaluated-as-seq-output-v1: PASS
+[workflow-root] seq-output-v1-thirteen-step: PASS
+CONFORMANCE OK: 143 vectors, 146 checks, sha256:60bf73f325793e16843370cfa24903bb0d017525cb297e42bebc35857e2db0d2
