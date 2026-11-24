@@ -1,0 +1,731 @@
+{
+ "format": "ap2-crosswalk-joined-table-threeway-1",
+ "joined": "2026-11-24",
+ "context": "google-agentic-commerce/AP2 issue #402; the two-way join (AER-1 + AMEP) of 2026-11-23 extended with nmatt1's APAF-1 column of 2026-11-24, at the parent commitment recorded on the issue (reply 7131471033). Join key: bundle name + payment, transaction_id on every row.",
+ "columns": {
+  "aer1": {
+   "source": "interop/ap2-crosswalk-joined-table-2026-11-23.md and interop/ap2-crosswalk-aer1-column-2026-11-23.json in zambodotdev/aer1-kit (this repo)",
+   "judges": "the record: whether the saved record recomputes unchanged from the bytes in the bundle",
+   "dictionary": [
+    "verified",
+    "verification failed",
+    "absent",
+    "not checked",
+    "rejected: unresolvable record"
+   ],
+   "counts": {
+    "verified": 17,
+    "verification failed": 2,
+    "absent": 3,
+    "not checked": 0,
+    "rejected: unresolvable record": 0
+   }
+  },
+  "amep": {
+   "source": "interop/ap2/verdicts.json in stafordtituss/amep, SHA-256 93aa9005beb32af0f1ba51666b45627b24b9c004da438c488af9d818fbf99b10",
+   "judges": "the payment afterwards: whether the processed payment stayed within the mandate",
+   "dictionary": [
+    "preserved",
+    "violated",
+    "unresolved"
+   ],
+   "counts": {
+    "preserved": 7,
+    "violated": 9,
+    "unresolved": 6
+   }
+  },
+  "apaf1": {
+   "source": "interop/ap2/apaf1-column.json in nmatt1/paymnts-trail-head-conformance, commit 95d61c440d5a4e3cc109dc9de7cf8ff52aca976e, file SHA-256 12d378cfd2af6e1216b6c4456cfe83099d1af865bb4effce76eaefe7901da568, published with his comment 7131341440 on google-agentic-commerce/AP2#402",
+   "judges": "the decision on the presented artifacts, including cumulative mandate state (spend, use count, closed-mandate replay) carried across the bundle",
+   "dictionary": [
+    "approved",
+    "declined",
+    "escalated",
+    "not_evaluated"
+   ],
+   "counts": {
+    "approved": 5,
+    "declined": 10,
+    "escalated": 5,
+    "not_evaluated": 2
+   },
+   "definitions": {
+    "approved": "chain, signatures, bindings, open-to-closed constraints and receipt all verify at the hop's presentation time",
+    "declined": "a hard failure: signature or binding invalid, constraint violated, presented evidence altered, or the closed mandate replayed",
+    "escalated": "a required check is unverifiable from the presented set: receipt absent or bound to another mandate, or a prior payment outcome unknown under stateful constraints",
+    "not_evaluated": "the processor reported a failed execution; there is no payment outcome to decide on"
+   },
+   "method": "independent implementation (app/core/pymnts/ap2_wire.py): SD-JWT disclosures resolved, all ES256 signatures and every digest binding recomputed, constraints evaluated against cumulative spend/use context carried across the bundle, open-mandate expiry judged at each hop's iat. Regenerable: python3 scripts/build_ap2_interop_column.py"
+  }
+ },
+ "fixture_pins": {
+  "sdk-bundles.json": "7e1dd6d97003d11f61ee2b60625bc1fff282d9a5f1eaa7426b276bbd3140b61f",
+  "bundles.json": "bd530228cb9880d33f49016ab85f426a6c0e9668f3b6e47734b4aa779a71c4fc"
+ },
+ "cross_checks": [
+  "nmatt1's AER-1 column matches the published two-way join on all 22 rows (17 verified, 2 verification failed on s7 and s8, 3 absent); he recomputed both fixture SHAs against the published pins before judging any row.",
+  "Against AMEP, as he printed it: 19 rows reach the same practical judgment (his declined covers AMEP's violated on all nine, plus s8; his escalated covers five of AMEP's six unresolved; his not_evaluated covers the two processor-Error receipts).",
+  "Against AER-1, as he printed it: the rows mostly diverge by scope, which is expected, because the columns judge different things."
+ ],
+ "named_divergences": [
+  {
+   "row": "s8-altered-amount txn-1",
+   "name": "the three-way split",
+   "text": "AMEP reads a signature gap (unresolved), AER-1 reads a failed record (verification failed), APAF-1 reads altered presented evidence and declines: the disclosure bytes decode, but their digest does not recompute against the digest committed inside the signed payload. In his dictionary, tampered evidence is a hard integrity failure, not a missing record and not a signature gap. Three defensible answers; his is the strictest."
+  },
+  {
+   "row": "s7-receipt-for-another-mandate txn-1",
+   "name": "the misbound receipt",
+   "text": "The presented receipt recomputes; it just binds a different mandate's closed hop. APAF-1 escalates (execution unverifiable from the presented set for this payment), AMEP reads no receipt (unresolved), AER-1 reads a failed record (verification failed)."
+  },
+  {
+   "row": "sdk-declined txn-1 and s4-declined txn-1",
+   "name": "processor-Error rows",
+   "text": "APAF-1 emits not_evaluated: the processor reported no execution, so there is no payment outcome to decide on. AMEP's preserved and AER-1's verified are about the decline's record, which also verifies. Agree in practice, different word."
+  }
+ ],
+ "join_note": "In his artifact, the s8-altered-amount row carries no transaction_id field (its checks read closed_mandate_absent, so no transaction id is recoverable from the presented set); that row is joined on bundle + payment index, the same key both published tables print for it (txn-1). Every other row carries its transaction_id in his file.",
+ "second_axis_finding": "His column also publishes, per row under checks.spec_schema, conformance of the presented mandate objects to the ap2-protocol.org JSON schemas. Finding: all 22 open payment mandates fail the contains clause, because none carries a payment.reference constraint, which the published open-payment-mandate schema requires. It does not drive his decision verdicts; it is a finding for whoever owns these fixtures.",
+ "shared_boundary": "Receipts carry no amount. Nothing in any of the three columns certifies the executed value; it rests on the closed mandate's amount and the processor's word.",
+ "rows": [
+  {
+   "bundle": "sdk-within",
+   "payment": "txn-1",
+   "amount_as_presented": "199.00",
+   "transaction_id": "txn-1",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "verified",
+   "amep": "preserved",
+   "apaf1": "approved",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "ok",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "Success:bound",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference"
+   ],
+   "note": "agree in all three columns"
+  },
+  {
+   "bundle": "sdk-over-range",
+   "payment": "txn-1",
+   "amount_as_presented": "250.00",
+   "transaction_id": "txn-1",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "verified",
+   "amep": "violated (I2, agent)",
+   "apaf1": "declined",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "violated",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "Success:bound",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "constraint:amount_above_max:25000>20000",
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+    "hard:constraint:amount_above_max:25000>20000"
+   ],
+   "note": "same refusal from AMEP and APAF-1 in different words; the record of an over-range payment still recomputes, so AER-1 verifies it. Scope split, as printed in the two-way join"
+  },
+  {
+   "bundle": "sdk-wrong-payee",
+   "payment": "txn-1",
+   "amount_as_presented": "199.00",
+   "transaction_id": "txn-1",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "verified",
+   "amep": "violated (I2, agent)",
+   "apaf1": "declined",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "violated",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "Success:bound",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "constraint:payee_not_allowed",
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+    "hard:constraint:payee_not_allowed"
+   ],
+   "note": "same split as sdk-over-range"
+  },
+  {
+   "bundle": "sdk-declined",
+   "payment": "txn-1",
+   "amount_as_presented": "199.00",
+   "transaction_id": "txn-1",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "verified",
+   "amep": "preserved",
+   "apaf1": "not_evaluated",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "ok",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "Error:bound",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+    "no_execution:processor_error"
+   ],
+   "note": "processor reported an Error, so APAF-1 has no payment outcome to decide; AMEP's preserved and AER-1's verified judge the decline's record, which is intact. Same practical judgment, different word"
+  },
+  {
+   "bundle": "sdk-lost-receipt",
+   "payment": "txn-1",
+   "amount_as_presented": "199.00",
+   "transaction_id": "txn-1",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "absent",
+   "amep": "unresolved (gap: receipt)",
+   "apaf1": "escalated",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "ok",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "absent",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+    "escalate:receipt_absent"
+   ],
+   "note": "all three columns name the same missing record: AER-1 absent, AMEP unresolved, APAF-1 escalated"
+  },
+  {
+   "bundle": "sdk-budget",
+   "payment": "txn-1",
+   "amount_as_presented": "199.00",
+   "transaction_id": "txn-1",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "verified",
+   "amep": "preserved",
+   "apaf1": "approved",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "ok",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "Success:bound",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference"
+   ],
+   "note": "agree in all three columns"
+  },
+  {
+   "bundle": "sdk-budget",
+   "payment": "txn-2",
+   "amount_as_presented": "150.00",
+   "transaction_id": "txn-2",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "verified",
+   "amep": "violated (I2, agent)",
+   "apaf1": "declined",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "violated",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "Success:bound",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "constraint:budget_exceeded:19900+15000>30000",
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+    "hard:constraint:budget_exceeded:19900+15000>30000"
+   ],
+   "note": "the row that needs a decision column carrying state: APAF-1 declines on cumulative spend found by recompute (19900 minor already spent + 15000 presented over a 30000 budget, budget.max in major units where amount_range is minor); AMEP violated (I2); AER-1 verifies the single record, which carries no running total"
+  },
+  {
+   "bundle": "sdk-issuer-jwt-hash",
+   "payment": "txn-1",
+   "amount_as_presented": "199.00",
+   "transaction_id": "txn-1",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "verified",
+   "amep": "preserved",
+   "apaf1": "approved",
+   "apaf1_checks": {
+    "chain_binding": "issuer_jwt_hash",
+    "constraints": "ok",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "Success:bound",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference"
+   ],
+   "note": "agree in all three columns; the chain binds closed to open by issuer_jwt_hash and the binding recomputes"
+  },
+  {
+   "bundle": "sdk-redeemed-twice",
+   "payment": "txn-1",
+   "amount_as_presented": "50.00",
+   "transaction_id": "txn-1",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "verified (both records)",
+   "amep": "violated (I2, agent)",
+   "apaf1": "declined",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "ok",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "Success:bound",
+    "replay": "closed_mandate_replay",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+    "hard:closed_mandate_replay"
+   ],
+   "apaf1_presentations": [
+    {
+     "chain": 1,
+     "checks": {
+      "chain_binding": "sd_hash",
+      "constraints": "ok",
+      "delegate_signature": "ok",
+      "issuer_signature": "ok",
+      "receipt": "Success:bound",
+      "replay": "ok",
+      "spec_schema": "nonconformant:1"
+     },
+     "evidence": [
+      "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference"
+     ],
+     "verdict": "approved"
+    },
+    {
+     "chain": 2,
+     "checks": {
+      "chain_binding": "sd_hash",
+      "constraints": "ok",
+      "delegate_signature": "ok",
+      "issuer_signature": "ok",
+      "receipt": "Success:bound",
+      "replay": "closed_mandate_replay",
+      "spec_schema": "nonconformant:1"
+     },
+     "evidence": [
+      "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+      "hard:closed_mandate_replay"
+     ],
+     "verdict": "declined"
+    }
+   ],
+   "note": "one payment over-redeemed: a byte-identical closed hop presented twice. APAF-1 declines the second presentation as closed_mandate_replay and AMEP marks the second execution violated (I2); both AER-1 records recompute, and the record layer carries no one-payment-per-mandate rule"
+  },
+  {
+   "bundle": "s1-within",
+   "payment": "txn-1",
+   "amount_as_presented": "199.00",
+   "transaction_id": "txn-1",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "verified",
+   "amep": "preserved",
+   "apaf1": "approved",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "ok",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "Success:bound",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference"
+   ],
+   "note": "agree in all three columns"
+  },
+  {
+   "bundle": "s2-over-range",
+   "payment": "txn-1",
+   "amount_as_presented": "250.00",
+   "transaction_id": "txn-1",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "verified",
+   "amep": "violated (I2, agent)",
+   "apaf1": "declined",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "violated",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "Success:bound",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "constraint:amount_above_max:25000>20000",
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+    "hard:constraint:amount_above_max:25000>20000"
+   ],
+   "note": "as sdk-over-range"
+  },
+  {
+   "bundle": "s3-wrong-payee",
+   "payment": "txn-1",
+   "amount_as_presented": "199.00",
+   "transaction_id": "txn-1",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "verified",
+   "amep": "violated (I2, agent)",
+   "apaf1": "declined",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "violated",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "Success:bound",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "constraint:payee_not_allowed",
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+    "hard:constraint:payee_not_allowed"
+   ],
+   "note": "as sdk-wrong-payee"
+  },
+  {
+   "bundle": "s4-declined",
+   "payment": "txn-1",
+   "amount_as_presented": "199.00",
+   "transaction_id": "txn-1",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "verified",
+   "amep": "preserved",
+   "apaf1": "not_evaluated",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "ok",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "Error:bound",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+    "no_execution:processor_error"
+   ],
+   "note": "as sdk-declined"
+  },
+  {
+   "bundle": "s5-lost-receipt",
+   "payment": "txn-1",
+   "amount_as_presented": "199.00",
+   "transaction_id": "txn-1",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "absent",
+   "amep": "unresolved (gap: receipt)",
+   "apaf1": "escalated",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "ok",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "absent",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+    "escalate:receipt_absent"
+   ],
+   "note": "as sdk-lost-receipt"
+  },
+  {
+   "bundle": "s6-budget",
+   "payment": "txn-1",
+   "amount_as_presented": "199.00",
+   "transaction_id": "txn-1",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "verified",
+   "amep": "preserved",
+   "apaf1": "approved",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "ok",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "Success:bound",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference"
+   ],
+   "note": "agree in all three columns"
+  },
+  {
+   "bundle": "s6-budget",
+   "payment": "txn-2",
+   "amount_as_presented": "150.00",
+   "transaction_id": "txn-2",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "verified",
+   "amep": "violated (I2, agent)",
+   "apaf1": "declined",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "violated",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "Success:bound",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "constraint:budget_exceeded:19900+15000>30000",
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+    "hard:constraint:budget_exceeded:19900+15000>30000"
+   ],
+   "note": "cumulative budget, as sdk-budget txn-2"
+  },
+  {
+   "bundle": "s7-receipt-for-another-mandate",
+   "payment": "txn-1",
+   "amount_as_presented": "199.00",
+   "transaction_id": "txn-1",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "verification failed",
+   "amep": "unresolved (gap: receipt)",
+   "apaf1": "escalated",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "ok",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "not_bound",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+    "escalate:receipt_not_bound"
+   ],
+   "note": "the presented receipt recomputes but binds a different mandate's closed hop. APAF-1 escalates: for this payment, execution is unverifiable from the presented set. AMEP reads a misbound receipt as no receipt (unresolved, gap: receipt); AER-1 reads the presented record as verification failed. Three words for one misbound receipt"
+  },
+  {
+   "bundle": "s8-altered-amount",
+   "payment": "txn-1",
+   "amount_as_presented": "99.00 as presented",
+   "transaction_id": null,
+   "apaf1_transaction_id_in_artifact": false,
+   "aer1": "verification failed",
+   "amep": "unresolved (gap: signature)",
+   "apaf1": "declined",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "ok",
+    "delegate_signature": "ok",
+    "disclosures": "binding_failed",
+    "issuer_signature": "ok",
+    "mandates": "closed_mandate_absent",
+    "receipt": "Success:bound",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+    "hard:disclosure_binding_failed",
+    "hard:closed_mandate_absent"
+   ],
+   "note": "the three-way split, named in full below"
+  },
+  {
+   "bundle": "s10-redeemed-twice",
+   "payment": "txn-1",
+   "amount_as_presented": "150.00",
+   "transaction_id": "txn-1",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "verified (both records)",
+   "amep": "violated (I2, agent)",
+   "apaf1": "declined",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "ok",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "Success:bound",
+    "replay": "closed_mandate_replay",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+    "hard:closed_mandate_replay"
+   ],
+   "apaf1_presentations": [
+    {
+     "chain": 1,
+     "checks": {
+      "chain_binding": "sd_hash",
+      "constraints": "ok",
+      "delegate_signature": "ok",
+      "issuer_signature": "ok",
+      "receipt": "Success:bound",
+      "replay": "ok",
+      "spec_schema": "nonconformant:1"
+     },
+     "evidence": [
+      "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference"
+     ],
+     "verdict": "approved"
+    },
+    {
+     "chain": 2,
+     "checks": {
+      "chain_binding": "sd_hash",
+      "constraints": "ok",
+      "delegate_signature": "ok",
+      "issuer_signature": "ok",
+      "receipt": "Success:bound",
+      "replay": "closed_mandate_replay",
+      "spec_schema": "nonconformant:1"
+     },
+     "evidence": [
+      "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+      "hard:closed_mandate_replay"
+     ],
+     "verdict": "declined"
+    }
+   ],
+   "note": "replay, as sdk-redeemed-twice"
+  },
+  {
+   "bundle": "s11-redeemed-twice-small",
+   "payment": "txn-1",
+   "amount_as_presented": "50.00",
+   "transaction_id": "txn-1",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "verified (both records)",
+   "amep": "violated (I2, agent)",
+   "apaf1": "declined",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "ok",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "Success:bound",
+    "replay": "closed_mandate_replay",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+    "hard:closed_mandate_replay"
+   ],
+   "apaf1_presentations": [
+    {
+     "chain": 1,
+     "checks": {
+      "chain_binding": "sd_hash",
+      "constraints": "ok",
+      "delegate_signature": "ok",
+      "issuer_signature": "ok",
+      "receipt": "Success:bound",
+      "replay": "ok",
+      "spec_schema": "nonconformant:1"
+     },
+     "evidence": [
+      "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference"
+     ],
+     "verdict": "approved"
+    },
+    {
+     "chain": 2,
+     "checks": {
+      "chain_binding": "sd_hash",
+      "constraints": "ok",
+      "delegate_signature": "ok",
+      "issuer_signature": "ok",
+      "receipt": "Success:bound",
+      "replay": "closed_mandate_replay",
+      "spec_schema": "nonconformant:1"
+     },
+     "evidence": [
+      "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+      "hard:closed_mandate_replay"
+     ],
+     "verdict": "declined"
+    }
+   ],
+   "note": "replay, as sdk-redeemed-twice; the total fits every limit and the split is unchanged"
+  },
+  {
+   "bundle": "s9-unknown-then-second",
+   "payment": "txn-1",
+   "amount_as_presented": "199.00",
+   "transaction_id": "txn-1",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "absent",
+   "amep": "unresolved (gap: receipt)",
+   "apaf1": "escalated",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "ok",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "not_bound",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+    "escalate:receipt_not_bound"
+   ],
+   "note": "all three columns name the same missing record, as sdk-lost-receipt"
+  },
+  {
+   "bundle": "s9-unknown-then-second",
+   "payment": "txn-2",
+   "amount_as_presented": "150.00",
+   "transaction_id": "txn-2",
+   "apaf1_transaction_id_in_artifact": true,
+   "aer1": "verified",
+   "amep": "unresolved (gap: held_outcome)",
+   "apaf1": "escalated",
+   "apaf1_checks": {
+    "chain_binding": "sd_hash",
+    "constraints": "ok",
+    "cumulative_state": "prior_unknown",
+    "delegate_signature": "ok",
+    "issuer_signature": "ok",
+    "receipt": "Success:bound",
+    "replay": "ok",
+    "spec_schema": "nonconformant:1"
+   },
+   "apaf1_evidence": [
+    "schema_open_payment_mandate:$.constraints:contains_unsatisfied:payment.reference",
+    "escalate:prior_outcome_unresolved"
+   ],
+   "note": "this payment's record verifies, and both decision columns hold it because payment 1's outcome is unknown under a stateful budget: AMEP unresolved (gap: held_outcome, the gap he named), APAF-1 escalated. Cross-payment state a record judgment does not carry"
+  }
+ ]
+}
