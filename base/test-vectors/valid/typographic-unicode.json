@@ -10,5 +10,6 @@
   "provenance_class": "EXECUTED BY ZAMBO",
   "canonical_bytes": "eyJpbnB1dHMiOnsicSI6InR5cG9ncmFwaGljIHVuaWNvZGUgcHJvYmUifSwiaXNzdWVyX2NsYWltcyI6eyJwcm92ZW5hbmNlX2NsYXNzIjoiRVhFQ1VURUQgQlkgWkFNQk8ifSwib3V0cHV0cyI6eyJ0ZXh0IjoiaXTigJlzIGEgd2VsbOKAkWtub3duIGZhY3Qg4oCUIHRoZSBhZ2VudOKAmXMgbG9nIOKAkyBlbnRyeSA14oCvMDAwIn0sInJlY2VpcHRfc2NoZW1hX3ZlcnNpb24iOiIwLjQiLCJ0b29sIjoiZ2V0X3dlYXRoZXIifQ==",
   "output_hash": "sha256:505fc1ba6e56f530c9336b19d26a4d78150c863d0d0478b65a6bebb4089bbf81",
+  "metadata_hash": "sha256:c8bebe05561dd7aa3416cd390c7f06824158ae1768d662705f7dca82044b6a24",
   "verification_status": "verified"
 }

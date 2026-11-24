@@ -193,6 +193,31 @@ byte-exactly. Absence of metadata_hash is not failed: Table 1
 makes the member conditional and mandates recomputation whenever
 it is present, and the corpus pins pre-binding 0.4 vectors that
 carry none.
+
+v1.6.0: metadata_hash absence enforcement (draft -26 Table 1 and
+Section 6 step 4), and the corpus correction it required. Table 1
+makes metadata_hash REQUIRED when receipt_schema_version is "0.4"
+or later; Section 6 step 4 states that a "0.4" receipt without
+metadata_hash MUST fail, while a "0.3" receipt without it verifies
+under the prior rules and is reported as a legacy acceptance.
+check() now fails the absence for schema "0.4" and later, in both
+runners; "0.3" and earlier are unchanged. This supersedes the -24
+reading recorded above ("absence of metadata_hash is not
+failed"), which keyed on the Table 1 "Cond." label alone. The ten
+pre-binding 0.4 vectors the corpus pinned as valid (bound-04,
+deep-nesting, edge-numbers, empty-members,
+input-hash-multikey-20, large-payload, maximum-offset-timestamp,
+optional-members-18, typographic-unicode, uuid-v1-core) now
+carry the metadata_hash computed over their own stored member
+values, so their edge-case intent is unchanged and they conform
+as written; every other vector file is byte-identical to v1.5.7.
+The catch is credited to Mikhail Sergeev's WEXP interop check
+(WEXP-dev/interop-test-lab issue #40; results merged in
+WEXP-dev/wexp-interop PR #25), whose closing comment named the
+divergence against the merged table: the kit passed ten 0.4
+receipts the draft says must fail. Kit v1.5.7 and its
+evaluated-set digest remain frozen and untouched; merged
+third-party records pin them.
 """
 import base64
 import binascii
@@ -388,6 +413,20 @@ def _metadata_digest(block):
     return "sha256:" + hashlib.sha256(blob).hexdigest()
 
 
+def _version_at_least(value, floor):
+    """True when a dotted schema version string parses to a tuple of
+    ints >= floor (e.g. "0.4" >= (0, 4)). An unparseable or missing
+    version is not at least anything: the member's own checks report
+    it, and the legacy path stays the default for old receipts."""
+    if not isinstance(value, str):
+        return False
+    try:
+        parts = tuple(int(p) for p in value.split("."))
+    except ValueError:
+        return False
+    return parts >= floor
+
+
 def check(receipt):
     """Return a list of failure reasons; empty means conformant."""
     failures = []
@@ -475,10 +514,8 @@ def check(receipt):
     # creation time, tool name, version, scope, and provenance class
     # to the record: without it, those members could be rewritten on
     # a stored 0.4 receipt without detection (Laurent Lemonnier's
-    # finding, 2026-10-29). Absence of the member is not failed
-    # here: Table 1 makes it conditional and mandates recomputation
-    # whenever it is present, and the pre-binding corpus vectors
-    # carry none.
+    # finding, 2026-10-29). Absence of the member is enforced at
+    # the end of check() (kit v1.6.0); see there.
     mh = receipt.get("metadata_hash")
     if mh is not None:
         if not isinstance(mh, str) or not HASH_RE.match(mh):
@@ -537,6 +574,28 @@ def check(receipt):
             failures.append("verification_status is not a non-empty string")
     elif receipt["verification_status"] != "verified":
         failures.append("verification_status is not verified")
+    # Metadata absence (draft Section 6 step 4; kit v1.6.0). Table 1
+    # makes metadata_hash REQUIRED when receipt_schema_version is
+    # "0.4" or later, and Section 6 step 4 states that a "0.4"
+    # receipt without metadata_hash MUST fail. For "0.3" and earlier
+    # the member stays optional and the receipt verifies under the
+    # prior rules (the legacy path). The absence failure is appended
+    # here, after the member-specific checks inside check(), so a
+    # vector whose defect the core check itself detects keeps
+    # reporting that defect first; a receipt with no other core
+    # failure is rejected on this rule alone (the binding layer in
+    # the runner evaluates after check(), so a binding-pinned 0.4
+    # vector without metadata_hash now reports this rule first,
+    # which is the draft's own order: Section 6 step 4 precedes
+    # the reference verifier's binding checks). This supersedes
+    # the -24 reading, which keyed on
+    # the Table 1 "Cond." label alone and never failed absence.
+    if receipt.get("metadata_hash") is None and _version_at_least(
+            receipt.get("receipt_schema_version"), (0, 4)):
+        failures.append(
+            "metadata_hash is missing: required when "
+            "receipt_schema_version is \"0.4\" or later "
+            "(Section 6 step 4)")
     return failures
 
 

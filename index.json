@@ -1,15 +1,15 @@
 {
   "format": "aer1-evaluated-corpus/1",
-  "kit_version": "1.5.7",
-  "distribution": "Zambo site corpus; upstream v1.5.6 plus versioned workflow-root vectors plus cross-version must-fail workflow-root vectors",
+  "kit_version": "1.6.0",
+  "distribution": "Zambo site corpus; kit v1.5.7 set with the ten pre-binding 0.4 valid vectors corrected to carry their Section 3.1 metadata_hash (kit v1.6.0; WEXP interop check #40)",
   "draft": "draft-zambo-aer1-26",
-  "base_kit_version": "1.5.6",
-  "base_corpus_digest": "sha256:b9a740e75c1d01a666d952d6037f9816d791e9bc0bfcef55a4e0d43c02cceb87",
+  "base_kit_version": "1.5.7",
+  "base_corpus_digest": "sha256:60bf73f325793e16843370cfa24903bb0d017525cb297e42bebc35857e2db0d2",
   "vector_count": 143,
   "check_count": 146,
-  "evaluated_set_digest": "sha256:60bf73f325793e16843370cfa24903bb0d017525cb297e42bebc35857e2db0d2",
+  "evaluated_set_digest": "sha256:4ea44dc07125a6f9b7fa472450a30fb56265771cfe87b1772a02b03d1fc166f2",
   "digest_algorithm": "SHA-256 of UTF-8 concatenation of path + NUL + lowercase SHA-256 of exact file bytes + LF, for evaluated vector files sorted by ASCII relative path. Excludes index, runners and license.",
-  "base_url": "https://zambo.dev/aer1/corpus/v1.5.7/",
+  "base_url": "https://zambo.dev/aer1/corpus/v1.6.0/",
   "files": [
     {
       "path": "base/anchor-vectors.json",
@@ -307,25 +307,25 @@
     },
     {
       "path": "base/test-vectors/valid/bound-04.json",
-      "sha256": "f9a447049112554c475c99c78b77bf6c3bd142f7ae6e90deb35d5135bf67bdb9",
+      "sha256": "51499b6a7633af52657881ee228ba7dadd77d58fb53dd2924c5f9fe3f05da3e4",
       "vectors": 1,
       "checks": 1
     },
     {
       "path": "base/test-vectors/valid/deep-nesting.json",
-      "sha256": "ac4aeb75626572922e80452e2f6843d11d408d3c7a7abbf0d8fddac502d4acda",
+      "sha256": "d9772a27bd002e2a5184779d9627bbb9c6a00e68589927d16728a3b612236f0f",
       "vectors": 1,
       "checks": 1
     },
     {
       "path": "base/test-vectors/valid/edge-numbers.json",
-      "sha256": "ef70b12a9f2f8a8478adfdbd5d5f27868241f85995012053d5cb26725ad56552",
+      "sha256": "87ce27f933fbaecf8fd14945a578fc60ed2d3e234f3fa67c82b028d565cdc2c5",
       "vectors": 1,
       "checks": 1
     },
     {
       "path": "base/test-vectors/valid/empty-members.json",
-      "sha256": "b88a78eaf5596dd1d2f7d905823cb2fd65cd664b51087eedd3816fb343b317b4",
+      "sha256": "c67c8d8ec2f6c6d03f1bec8e47b3a424d564a4a66fd6aaab8737a0ffe237fee0",
       "vectors": 1,
       "checks": 1
     },
@@ -343,13 +343,13 @@
     },
     {
       "path": "base/test-vectors/valid/input-hash-multikey-20.json",
-      "sha256": "a4ac5c0973f0a90861d326fb00b5be728aefe3a2fc5017fa7b4647334117ac7d",
+      "sha256": "e84a32e44534cbf8ec53d0dcfb123a6dfc4b62d30bd02cdee9fa334116c8ae99",
       "vectors": 1,
       "checks": 1
     },
     {
       "path": "base/test-vectors/valid/large-payload.json",
-      "sha256": "f3b7818b5b9668accadd03164784ce2c594f266e225f2a37c9715dcb101a8e39",
+      "sha256": "a29d4872db7fb18fd80df6498b3b9025f34809deed33bbe3107c18d48a442b71",
       "vectors": 1,
       "checks": 1
     },
@@ -373,7 +373,7 @@
     },
     {
       "path": "base/test-vectors/valid/maximum-offset-timestamp.json",
-      "sha256": "f313b4b7bf389e82c3b370e917a74ddc96a40b8201eb0ee19852e35b684ddcc4",
+      "sha256": "93ffb643a799ac7b7f699c1b21b33ae9d4020939447f1107619832379cd6fb1e",
       "vectors": 1,
       "checks": 1
     },
@@ -385,7 +385,7 @@
     },
     {
       "path": "base/test-vectors/valid/optional-members-18.json",
-      "sha256": "922cd701e967dc6ce550f368f41083893a5891556460ce79212dbc241370350b",
+      "sha256": "77d2e2fb09f18f38728f8a53643e0ff4e65da5ffe79f60bf296c8145287bb08f",
       "vectors": 1,
       "checks": 1
     },
@@ -421,13 +421,13 @@
     },
     {
       "path": "base/test-vectors/valid/typographic-unicode.json",
-      "sha256": "91a3d7fda2f82c3e19aeb25c712c1c44cc0a19c4c33d06bf86e6f58b2b99dcf1",
+      "sha256": "83f0d580582db20a4ae42616f0348351e016fbd8be3cf2f989cfd45fa4ac9163",
       "vectors": 1,
       "checks": 1
     },
     {
       "path": "base/test-vectors/valid/uuid-v1-core.json",
-      "sha256": "597522c8279f4012b983019bb5cbd61bcbcf5fb34388a876476767602cb6e568",
+      "sha256": "c058e7f22b4cbe5fdb1d5353e33fcaed26680f9e307348e3acfa8b681fc79c99",
       "vectors": 1,
       "checks": 1
     },

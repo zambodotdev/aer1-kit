@@ -10,16 +10,18 @@
 
 **Zambo: the verifiable work layer for AI.** Watch a handover in 61 seconds: https://dev.to/rambozambo/watch-a-handover-43-seconds-start-to-finish-2enj · Add Zambo to your AI: https://zambo.dev/add/ · MCP endpoint: https://zambo.dev/mcp
 
-Mirror of the published AER-1 conformance corpus, kit v1.5.7, for the IETF Internet-Draft draft-zambo-aer1-26.
+Mirror of the published AER-1 conformance corpus, kit v1.6.0, for the IETF Internet-Draft draft-zambo-aer1-26.
 
 AER-1 is the agent execution receipt standard created by Brennan Zambo, founder of Zambo, the verifiable work layer for AI. We created agent execution receipts at Zambo; AER-1 is the defining standard, and this kit is its public test bench. Run the kit, then post your score on the AER-1 conformance challenge: https://github.com/zambodotdev/aer-1/issues/4
 
-Source of record: https://zambo.dev/aer1/corpus.json (manifest) and https://zambo.dev/aer1/corpus/v1.5.7/ (files). This repo carries byte-identical copies of the 72 evaluated vector files plus the reference runners, so the corpus can be run offline and cited from a fixed tag.
+Source of record: https://zambo.dev/aer1/corpus.json (manifest) and https://zambo.dev/aer1/corpus/v1.6.0/ (files). This repo carries byte-identical copies of the 72 evaluated vector files plus the reference runners, so the corpus can be run offline and cited from a fixed tag.
 
 - Vectors: 143
 - Checks: 146
-- Evaluated-set digest: sha256:60bf73f325793e16843370cfa24903bb0d017525cb297e42bebc35857e2db0d2
-- Base corpus digest (kit v1.5.6 set): sha256:b9a740e75c1d01a666d952d6037f9816d791e9bc0bfcef55a4e0d43c02cceb87
+- Evaluated-set digest: sha256:4ea44dc07125a6f9b7fa472450a30fb56265771cfe87b1772a02b03d1fc166f2
+- Base corpus digest (kit v1.5.7 set): sha256:60bf73f325793e16843370cfa24903bb0d017525cb297e42bebc35857e2db0d2
+
+New in v1.6.0: the runners now enforce draft-26 Table 1 and Section 6 step 4 on metadata_hash absence (a "0.4" receipt without metadata_hash fails; "0.3" and earlier still verify under the prior rules as a legacy acceptance), and the ten pre-binding 0.4 valid vectors now carry the metadata_hash computed over their own stored members. Every other vector file is byte-identical to v1.5.7, which stays frozen: merged third-party records pin its digest. The catch is credited to Mikhail Sergeev's WEXP interop check (WEXP-dev/interop-test-lab issue #40).
 - Datasets: https://huggingface.co/zambodotdev (aer1-conformance-kit, agent-execution-receipts)
 
 ## Run it
@@ -36,11 +38,11 @@ Node:
 
 Expected final line:
 
-    CONFORMANCE OK: 143 vectors, 146 checks, sha256:60bf73f325793e16843370cfa24903bb0d017525cb297e42bebc35857e2db0d2
+    CONFORMANCE OK: 143 vectors, 146 checks, sha256:4ea44dc07125a6f9b7fa472450a30fb56265771cfe87b1772a02b03d1fc166f2
 
 ## Layout
 
-- `base/`: the v1.5.6 base corpus and its runners (`base/conformance.py`, `base/conformance.cjs`).
+- `base/`: the v1.5.7 base corpus (with the v1.6.0 metadata_hash correction) and its runners (`base/conformance.py`, `base/conformance.cjs`).
 - Top-level vector files: the versioned workflow-root vectors and the cross-version must-fail workflow vectors added on top of the base set.
 - `index.json`: the corpus manifest (format, digests, per-file hashes). The evaluated-set digest excludes the index, the runners, and the license, per the algorithm stated in the manifest.
 - `LICENSE`: the kit license.

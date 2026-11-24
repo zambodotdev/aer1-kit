@@ -10,5 +10,6 @@
   "provenance_class": "EXECUTED BY ZAMBO",
   "canonical_bytes": "eyJpbnB1dHMiOnsiY2l0eSI6IkF1c3RpbiJ9LCJpc3N1ZXJfY2xhaW1zIjp7InByb3ZlbmFuY2VfY2xhc3MiOiJFWEVDVVRFRCBCWSBaQU1CTyJ9LCJvdXRwdXRzIjoic3VubnksIDc1RiIsInJlY2VpcHRfc2NoZW1hX3ZlcnNpb24iOiIwLjQiLCJ0b29sIjoiZ2V0X3dlYXRoZXIifQ==",
   "output_hash": "sha256:3f113a9b490bc0b2a22b56a22b48cd9396b2e6a8082824cf56ca85fe53e795d6",
+  "metadata_hash": "sha256:0cc25b9bc0300e9f8217e7d9c9abda1600121d93925b2d83514bad3c72af5631",
   "verification_status": "verified"
 }
