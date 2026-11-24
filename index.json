@@ -1,6 +1,6 @@
 {
   "format": "aer1-evaluated-corpus/1",
-  "kit_version": "1.6.0",
+  "kit_version": "1.6.1",
   "distribution": "Zambo site corpus; kit v1.5.7 set with the ten pre-binding 0.4 valid vectors corrected to carry their Section 3.1 metadata_hash (kit v1.6.0; WEXP interop check #40)",
   "draft": "draft-zambo-aer1-26",
   "base_kit_version": "1.5.7",
@@ -455,11 +455,11 @@
     },
     {
       "path": "base/conformance.py",
-      "sha256": "af30138281da5c843e5a75559cc21122805b1f3419ff986a55f656ac3e7012dc"
+      "sha256": "50c9ba2afe18f844fff8818e21dcd269e1210a83068ce05db26f81cf68499b4c"
     },
     {
       "path": "base/conformance.cjs",
-      "sha256": "e2b9fccfca305372bfae06c1db578b96208c8e41837da3718140355abadccebb"
+      "sha256": "5aa535a3e00ae9d9b2f525eb15167e3804ad4c42fda1191d75e4f2c4327a0eda"
     },
     {
       "path": "LICENSE",
