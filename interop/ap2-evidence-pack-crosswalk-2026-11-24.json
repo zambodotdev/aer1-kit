@@ -1,14 +1,24 @@
 {
- "about": "pqam/0.1 conformance cases read against ap2-evidence-pack 1.10.0 (SPEC_AP2_EVIDENCE.md, 2026-11-22) and the AER-1 anchor outcomes. Our reading, for review on AP2 #338.",
+ "about": "pqam/0.1 conformance cases against ap2-evidence-pack 1.10.0 (SPEC_AP2_EVIDENCE.md, 2026-11-22) and the AER-1 anchor outcomes. Revision 2: corrected from a 1.10.0 run on AP2 #338.",
  "pqam_vectors": "https://github.com/eltociear/pqam/blob/main/vectors/pqam-0.1.json",
+ "run": {
+  "by": "robertolocatelli81-dev (Noûs), AP2 #338",
+  "source": "https://github.com/google-agentic-commerce/AP2/issues/338#issuecomment-7130575583",
+  "release": "ap2-evidence-pack 1.10.0 (PyPI wheel sha256 36a176df58f3d35698a572647cc3399382dbd526aa2356213051ce4f1288accc)",
+  "against": "crosswalk revision 1 (pqam d41f78a)",
+  "date": "2026-11-24"
+ },
  "summary": {
   "rows": 62,
   "verify": 26,
   "admission": 10,
   "policy": 26,
-  "maps_yes": 17,
-  "maps_partial": 16,
-  "maps_no": 29
+  "maps_yes": 8,
+  "maps_partial": 25,
+  "maps_no": 29,
+  "run_as_read": 17,
+  "run_corrected": 10,
+  "read_only": 9
  },
  "rows": [
   {
@@ -18,7 +28,8 @@
    "maps": "yes",
    "pack_today": "sealed_content verified; holder_binding verified (KB-JWT)",
    "pack_with_issuance_member": "same, plus the issuance signature verified at the mandate",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "run 1.10.0: as read"
   },
   {
    "set": "verify",
@@ -27,7 +38,8 @@
    "maps": "yes",
    "pack_today": "sealed_content verified; holder_binding verified",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "run 1.10.0: as read"
   },
   {
    "set": "verify",
@@ -36,7 +48,8 @@
    "maps": "yes",
    "pack_today": "sealed_content contradicted (artifact_invalid: issuer signature)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "run 1.10.0: as read"
   },
   {
    "set": "verify",
@@ -45,7 +58,8 @@
    "maps": "partial",
    "pack_today": "no issuer-PQ member exists, so the ES256 mandate alone reads sealed_content verified",
    "pack_with_issuance_member": "the mandate's own verification fails (a required issuance signature is missing), where its ES256 failure would land",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "run 1.10.0: as read"
   },
   {
    "set": "verify",
@@ -54,7 +68,8 @@
    "maps": "partial",
    "pack_today": "the forged ES256 mandate verifies: sealed_content verified. A fresh pack and a fresh anchor verify too. This is the gap.",
    "pack_with_issuance_member": "contradicted at the mandate: the PQ half fails",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "run 1.10.0: as read"
   },
   {
    "set": "verify",
@@ -63,7 +78,8 @@
    "maps": "partial",
    "pack_today": "as above: verified",
    "pack_with_issuance_member": "contradicted (a signer outside the signed key list)",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "run 1.10.0: as read"
   },
   {
    "set": "verify",
@@ -72,7 +88,8 @@
    "maps": "partial",
    "pack_today": "the nearest rule is the producer block's: an unknown sig_alg is a GAP (not_evaluated), and the block is never ok",
    "pack_with_issuance_member": "pqam refuses an unknown algorithm outright (UnknownAlgorithm). Neither accepts it, but the words differ: not_evaluated vs. a failure",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "run 1.10.0: as read"
   },
   {
    "set": "verify",
@@ -81,7 +98,8 @@
    "maps": "yes",
    "pack_today": "holder_binding not_evaluated (not_present): no KB-JWT. That is a failure only if the relying party requires holder binding",
    "pack_with_issuance_member": "pqam: NotAccepted is a verification failure. Acceptance is required, not a relying-party option",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "run 1.10.0: as read"
   },
   {
    "set": "verify",
@@ -90,16 +108,18 @@
    "maps": "yes",
    "pack_today": "holder_binding contradicted (kb_signature_invalid)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "run 1.10.0: as read"
   },
   {
    "set": "verify",
    "name": "issuer signature made under the accept tag",
    "pqam": "BadSignature",
-   "maps": "yes",
-   "pack_today": "sealed_content contradicted (issuer signature)",
-   "pack_with_issuance_member": "same (domain separation; the pack's analogue is the typ check of the JOSE header profile, §13)",
-   "aer1_anchor": "n/a"
+   "maps": "partial",
+   "pack_today": "a mandate with typ kb+jwt reads valid: true. typ is checked on the KB-JWT (§6 step 2, §9.2) and on delegation-chain hops after the first (§2.1), not on a mandate outside a chain",
+   "pack_with_issuance_member": "contradicted at the mandate: pqam's type tag is inside the signed bytes",
+   "aer1_anchor": "n/a",
+   "run": "run 1.10.0: corrected from the first reading"
   },
   {
    "set": "verify",
@@ -108,7 +128,8 @@
    "maps": "yes",
    "pack_today": "sealed_content verified",
    "pack_with_issuance_member": "verified. Whether it is acceptable is policy: see the admission rows",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "run 1.10.0: as read"
   },
   {
    "set": "verify",
@@ -117,25 +138,28 @@
    "maps": "partial",
    "pack_today": "no ML-DSA-44 in the pack's algorithm set",
    "pack_with_issuance_member": "verified (pq_level 2). Admission refuses it under min_pq_level 3",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "run 1.10.0: as read"
   },
   {
    "set": "verify",
    "name": "amount as a JSON number",
    "pqam": "Malformed",
-   "maps": "yes",
-   "pack_today": "admission refused, refusal_class malformed",
-   "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "maps": "partial",
+   "pack_today": "depends on where the number sits. Inside the mandate an integer amount is admitted and reads valid: true, and a fraction reads sealed_content contradicted (artifact_invalid, sd_number_fraction). admission refused / malformed applies only to a fraction in the pack file itself",
+   "pack_with_issuance_member": "pqam: Malformed (amounts are decimal strings)",
+   "aer1_anchor": "n/a",
+   "run": "run 1.10.0: corrected from the first reading"
   },
   {
    "set": "verify",
    "name": "a field pqam/0.1 does not define",
    "pqam": "Malformed",
-   "maps": "yes",
-   "pack_today": "admission refused, refusal_class unknown_member (§9.1 closed schema)",
-   "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "maps": "partial",
+   "pack_today": "depends on where the field sits. In a format object it is admission refused / unknown_member (§9.1). An unknown claim inside the mandate is admitted",
+   "pack_with_issuance_member": "pqam: Malformed (the mandate's own fields are closed too)",
+   "aer1_anchor": "n/a",
+   "run": "run 1.10.0: corrected from the first reading"
   },
   {
    "set": "verify",
@@ -144,7 +168,8 @@
    "maps": "no",
    "pack_today": "a pqam semantic limit. The pack has no mandate-lifetime rule",
    "pack_with_issuance_member": "pqam: Malformed",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "read only"
   },
   {
    "set": "verify",
@@ -153,7 +178,8 @@
    "maps": "partial",
    "pack_today": "no revocation artifact. The nearest is an artifact with a §4 binding to the mandate",
    "pack_with_issuance_member": "a revocation as an artifact bound to the mandate hash",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "read only"
   },
   {
    "set": "verify",
@@ -162,7 +188,8 @@
    "maps": "partial",
    "pack_today": "a §4 binding that does not hold: bindings_ok false, or require_binding unmet",
    "pack_with_issuance_member": "WrongMandate",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "run 1.10.0: as read"
   },
   {
    "set": "verify",
@@ -171,7 +198,8 @@
    "maps": "no",
    "pack_today": "no approval artifact (a held payment released by the issuer)",
    "pack_with_issuance_member": "an issuer-signed artifact bound to the mandate",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "read only"
   },
   {
    "set": "verify",
@@ -180,7 +208,8 @@
    "maps": "no",
    "pack_today": "no analogue",
    "pack_with_issuance_member": "UnexpectedSigner",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "read only"
   },
   {
    "set": "verify",
@@ -189,7 +218,8 @@
    "maps": "partial",
    "pack_today": "nearest: the merchant-signed checkout_jwt / checkout_hash of a closed checkout mandate",
    "pack_with_issuance_member": "a payee-signed invoice, PQ",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "read only"
   },
   {
    "set": "verify",
@@ -198,7 +228,8 @@
    "maps": "partial",
    "pack_today": "the checkout_hash binding fails",
    "pack_with_issuance_member": "BadSignature",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "read only"
   },
   {
    "set": "verify",
@@ -207,7 +238,8 @@
    "maps": "partial",
    "pack_today": "issuer_identity: the key is not the one the relying party resolves",
    "pack_with_issuance_member": "UnexpectedSigner",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "read only"
   },
   {
    "set": "verify",
@@ -216,7 +248,8 @@
    "maps": "partial",
    "pack_today": "AP2 Payment Receipt artifact (ES256)",
    "pack_with_issuance_member": "the enforcer's receipt, PQ-signed",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "read only"
   },
   {
    "set": "verify",
@@ -225,7 +258,8 @@
    "maps": "partial",
    "pack_today": "nearest: the producer block, scheme hybrid (one classical and one ml-dsa-65 entry)",
    "pack_with_issuance_member": "verified",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "read only"
   },
   {
    "set": "verify",
@@ -234,16 +268,18 @@
    "maps": "partial",
    "pack_today": "our reading of §5: a lone ml-dsa-65 entry matches neither scheme, so the block is not ok",
    "pack_with_issuance_member": "BadSignature: the PQ signature is bound to the pair",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "run 1.10.0: as read"
   },
   {
    "set": "verify",
    "name": "stripping: classical signature removed, both keys expected",
    "pqam": "MissingSignature",
    "maps": "partial",
-   "pack_today": "our reading of §5: the block's signatures are outside the digest (§3), so the opposite strip (drop the ml-dsa-65 entry, relabel scheme classical-only) gives an ok block with pq_protected false. Only require_pq catches it. Please confirm",
+   "pack_today": "the opposite strip in the producer block: drop the ml-dsa-65 entry and relabel scheme classical-only. This reads valid: true with no policy, and also with both producer keys pinned (producer_signature verified), --trust-set-complete and --require-producer. The same holds when the content is changed and the block re-signed with the classical key alone. It shows only as pq_protected: false and scheme: classical-only. Refused under --require-pq, or when the pinned set holds the ml-dsa-65 key alone. Control: leaving scheme hybrid after the strip reads contradicted. To be fixed in 1.11.0 (a pinned ml-dsa-65 key will require an ml-dsa-65 signature)",
    "pack_with_issuance_member": "MissingSignature: the required key set is in the signed data, not a relabelable field",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "run 1.10.0: corrected from the first reading"
   },
   {
    "set": "admission",
@@ -252,7 +288,8 @@
    "maps": "yes",
    "pack_today": "policy met",
    "pack_with_issuance_member": "policy met",
-   "aer1_anchor": "absent"
+   "aer1_anchor": "absent",
+   "run": "run 1.10.0: as read"
   },
   {
    "set": "admission",
@@ -260,80 +297,89 @@
    "pqam": "verification ok; policy admitted",
    "maps": "yes",
    "pack_today": "policy met",
-   "pack_with_issuance_member": "policy met",
-   "aer1_anchor": "absent (a verifier's clock is not an anchor)"
+   "pack_with_issuance_member": "policy met: a PQ-issued mandate needs no time",
+   "aer1_anchor": "absent (a verifier's clock is not an anchor)",
+   "run": "run 1.10.0: as read"
   },
   {
    "set": "admission",
    "name": "classical-only, no transition date: warned",
    "pqam": "verification ok; policy admitted-with-warning NoPqIssuance",
    "maps": "partial",
-   "pack_today": "policy met. The pack has no warning state, so this row does not map exactly",
-   "pack_with_issuance_member": "policy met. The pack has no warning state, so this row does not map exactly",
-   "aer1_anchor": "absent"
+   "pack_today": "policy met (the pack has no warning state)",
+   "pack_with_issuance_member": "policy met, with a recorded warning",
+   "aer1_anchor": "absent",
+   "run": "run 1.10.0: as read"
   },
   {
    "set": "admission",
    "name": "classical-only, anchored before the date: warned",
    "pqam": "verification ok; policy admitted-with-warning NoPqIssuance",
    "maps": "partial",
-   "pack_today": "policy met. The pack has no warning state, so this row does not map exactly",
-   "pack_with_issuance_member": "policy met. The pack has no warning state, so this row does not map exactly",
-   "aer1_anchor": "verified (assuming the anchor itself checked; the vector supplies its time)"
+   "pack_today": "policy met (the pack has no warning state)",
+   "pack_with_issuance_member": "policy met, with a recorded warning",
+   "aer1_anchor": "verified (assuming the anchor itself checked; the vector supplies its time)",
+   "run": "run 1.10.0: as read"
   },
   {
    "set": "admission",
    "name": "classical-only, anchored at the date: refused (signature still verifies)",
    "pqam": "verification ok; policy refused NoPqIssuance",
-   "maps": "yes",
-   "pack_today": "states unchanged (sealed_content verified); policy unmet: require_pq, as a property of the mandate (proposed)",
-   "pack_with_issuance_member": "states unchanged (sealed_content verified); policy unmet: require_pq, as a property of the mandate (proposed)",
-   "aer1_anchor": "verified (assuming the anchor itself checked; the vector supplies its time)"
+   "maps": "partial",
+   "pack_today": "require_pq is a test on the producer block only. A classical-only mandate inside a pack with a pinned hybrid producer block and --require-pq reads require_pq met, valid: true",
+   "pack_with_issuance_member": "states unchanged (sealed_content verified). Policy unmet: require_pq, as a property of the mandate, on the anchor's gen_time",
+   "aer1_anchor": "verified (assuming the anchor itself checked; the vector supplies its time)",
+   "run": "run 1.10.0: corrected from the first reading"
   },
   {
    "set": "admission",
    "name": "classical-only, block time after the date: refused",
    "pqam": "verification ok; policy refused NoPqIssuance",
-   "maps": "yes",
-   "pack_today": "states unchanged (sealed_content verified); policy unmet: require_pq, as a property of the mandate (proposed)",
-   "pack_with_issuance_member": "states unchanged (sealed_content verified); policy unmet: require_pq, as a property of the mandate (proposed)",
-   "aer1_anchor": "n/a: block time is the enforcer's record, not an anchor"
+   "maps": "partial",
+   "pack_today": "require_pq is a test on the producer block only. A classical-only mandate inside a pack with a pinned hybrid producer block and --require-pq reads require_pq met, valid: true",
+   "pack_with_issuance_member": "as above, on the enforcer's block time",
+   "aer1_anchor": "n/a: block time is the enforcer's record, not an anchor",
+   "run": "run 1.10.0: corrected from the first reading"
   },
   {
    "set": "admission",
    "name": "classical-only, verifier's own clock: refused as untrusted time",
    "pqam": "verification ok; policy refused UntrustedTime",
-   "maps": "yes",
-   "pack_today": "policy unmet: require_anchor. The transition check has no trusted time",
-   "pack_with_issuance_member": "policy unmet: require_anchor. The transition check has no trusted time",
-   "aer1_anchor": "absent (a verifier's clock is not an anchor)"
+   "maps": "partial",
+   "pack_today": "time_anchor not_evaluated / not_present. require_anchor is unmet only when --require-anchor is given and no anchor is counted",
+   "pack_with_issuance_member": "policy refused: no trusted time for the transition check (pqam UntrustedTime)",
+   "aer1_anchor": "absent (a verifier's clock is not an anchor)",
+   "run": "run 1.10.0: corrected from the first reading"
   },
   {
    "set": "admission",
    "name": "classical-only, no time at all: refused as untrusted time",
    "pqam": "verification ok; policy refused UntrustedTime",
-   "maps": "yes",
-   "pack_today": "policy unmet: require_anchor. The transition check has no trusted time",
-   "pack_with_issuance_member": "policy unmet: require_anchor. The transition check has no trusted time",
-   "aer1_anchor": "absent"
+   "maps": "partial",
+   "pack_today": "time_anchor not_evaluated / not_present. require_anchor is unmet only when --require-anchor is given and no anchor is counted",
+   "pack_with_issuance_member": "policy refused: no trusted time for the transition check (pqam UntrustedTime)",
+   "aer1_anchor": "absent",
+   "run": "run 1.10.0: corrected from the first reading"
   },
   {
    "set": "admission",
    "name": "ML-DSA-44 only, after the date: refused",
    "pqam": "verification ok; policy refused NoPqIssuance",
-   "maps": "yes",
-   "pack_today": "states unchanged (sealed_content verified); policy unmet: require_pq, as a property of the mandate (proposed)",
-   "pack_with_issuance_member": "states unchanged (sealed_content verified); policy unmet: require_pq, as a property of the mandate (proposed)",
-   "aer1_anchor": "verified (assuming the anchor itself checked; the vector supplies its time)"
+   "maps": "partial",
+   "pack_today": "require_pq is a test on the producer block only. A classical-only mandate inside a pack with a pinned hybrid producer block and --require-pq reads require_pq met, valid: true (and ML-DSA-44 is not in the pack's algorithm set)",
+   "pack_with_issuance_member": "policy unmet: below min_pq_level",
+   "aer1_anchor": "verified (assuming the anchor itself checked; the vector supplies its time)",
+   "run": "run 1.10.0: corrected from the first reading"
   },
   {
    "set": "admission",
    "name": "Q-Day forgery: fails verification, policy never reached",
    "pqam": "verification BadSignature; policy not-reached",
-   "maps": "yes",
-   "pack_today": "sealed_content contradicted. Policy is evaluated but cannot make the pack valid",
-   "pack_with_issuance_member": "sealed_content contradicted. Policy is evaluated but cannot make the pack valid",
-   "aer1_anchor": "verified (assuming the anchor itself checked; the vector supplies its time)"
+   "maps": "partial",
+   "pack_today": "sealed_content verified, valid: true. The forged ES256 mandate verifies, as in verify 5",
+   "pack_with_issuance_member": "contradicted at the mandate (the PQ half fails). Policy is never reached",
+   "aer1_anchor": "verified (assuming the anchor itself checked; the vector supplies its time)",
+   "run": "run 1.10.0: corrected from the first reading"
   },
   {
    "set": "policy",
@@ -342,7 +388,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -351,7 +398,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -360,7 +408,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -369,7 +418,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -378,7 +428,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -387,7 +438,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -396,7 +448,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -405,7 +458,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -414,7 +468,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -423,7 +478,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -432,7 +488,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -441,7 +498,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -450,7 +508,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -459,7 +518,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -468,7 +528,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -477,7 +538,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -486,7 +548,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -495,7 +558,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -504,7 +568,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -513,7 +578,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -522,7 +588,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -531,7 +598,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -540,7 +608,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -549,7 +618,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -558,7 +628,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   },
   {
    "set": "policy",
@@ -567,7 +638,8 @@
    "maps": "no",
    "pack_today": "an enforcement decision, not evidence. At most it shows up as a Payment Receipt status (Success / Error)",
    "pack_with_issuance_member": "same",
-   "aer1_anchor": "n/a"
+   "aer1_anchor": "n/a",
+   "run": "not applicable"
   }
  ]
 }

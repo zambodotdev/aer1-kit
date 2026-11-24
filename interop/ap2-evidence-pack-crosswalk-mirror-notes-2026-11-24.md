@@ -1,11 +1,28 @@
 # AP2 evidence-pack crosswalk: mirror notes (2026-11-24)
 
 Mirror of `interop/ap2-evidence-pack/CROSSWALK.md` and `crosswalk.json` from
-[eltociear/pqam](https://github.com/eltociear/pqam/tree/main/interop/ap2-evidence-pack)
-at commit `d41f78a`, copied 2026-11-24. Mirrored file SHA-256:
+[eltociear/pqam](https://github.com/eltociear/pqam/tree/main/interop/ap2-evidence-pack),
+first copied 2026-11-24 at commit `d41f78a` (revision 1), updated the same day
+to revision 2 at commit `1c34a21d34f8`. Mirrored file SHA-256 (revision 2):
 
-- CROSSWALK.md: `4425b7a49d0284c3a418d96ba10df06063481c7d69c311b5950c1526d154717c`
-- crosswalk.json: `138cc006f6456cae323aa0d5574430892be93dfcd54a87754b5d73053e3eb654`
+- CROSSWALK.md: `6c09d29bd22ccfedd794f90a9cefc9307dda3b90efa8449ebc34dd2d88ef52bf`
+- crosswalk.json: `064622c60dc1e1fb561e45ba07915589301366fd0f9a55df66a2038509677b0e`
+
+## Revision 2 (2026-11-24)
+
+eltociear rebuilt the crosswalk from Roberto's 1.10.0 run (see below) and
+confirmed on issue #338 that revision 2 is the one to mirror: comment
+[7136612717](https://github.com/google-agentic-commerce/AP2/issues/338#issuecomment-7136612717).
+In revision 2, `today` is strictly what 1.10.0 does and the issuance-member
+column is strictly the proposal; of the 36 rows that state a 1.10.0 output, 17
+ran as read, 10 were corrected and 9 are read only. Maps are now 8 yes, 25
+partial, 29 no. The corrections are the placement lesson: a check binds where
+it sits (a fraction inside the mandate vs in the pack file, `typ` in a chain
+vs outside one, an unknown member in a format object vs in the claim set).
+Verify 26 carries the wider run result, with the `--require-pq` interim
+advice and the 1.11.0 pinned-key rule. The file stays generated from the
+vectors by `crosswalk.mjs`; if 1.11.0 changes a row, eltociear regenerates it
+and this mirror follows the regenerated file.
 
 Context: the crosswalk maps 62 cases (26 verify, 10 admission, 26 policy)
 between the AP2 evidence pack (SPEC_AP2_EVIDENCE 1.10.0) and AER-1 outcomes.
