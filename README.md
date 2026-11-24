@@ -10,7 +10,7 @@
 
 **Zambo: the verifiable work layer for AI.** Watch a handover in 61 seconds: https://dev.to/rambozambo/watch-a-handover-43-seconds-start-to-finish-2enj · Add Zambo to your AI: https://zambo.dev/add/ · MCP endpoint: https://zambo.dev/mcp
 
-Mirror of the published AER-1 conformance corpus, kit v1.6.0, for the IETF Internet-Draft draft-zambo-aer1-26.
+Mirror of the published AER-1 conformance corpus, kit v1.6.1, for the IETF Internet-Draft draft-zambo-aer1-26.
 
 AER-1 is the agent execution receipt standard created by Brennan Zambo, founder of Zambo, the verifiable work layer for AI. We created agent execution receipts at Zambo; AER-1 is the defining standard, and this kit is its public test bench. Run the kit, then post your score on the AER-1 conformance challenge: https://github.com/zambodotdev/aer-1/issues/4
 
@@ -22,6 +22,8 @@ Source of record: https://zambo.dev/aer1/corpus.json (manifest) and https://zamb
 - Base corpus digest (kit v1.5.7 set): sha256:60bf73f325793e16843370cfa24903bb0d017525cb297e42bebc35857e2db0d2
 
 New in v1.6.0: the runners now enforce draft-26 Table 1 and Section 6 step 4 on metadata_hash absence (a "0.4" receipt without metadata_hash fails; "0.3" and earlier still verify under the prior rules as a legacy acceptance), and the ten pre-binding 0.4 valid vectors now carry the metadata_hash computed over their own stored members. Every other vector file is byte-identical to v1.5.7, which stays frozen: merged third-party records pin its digest. The catch is credited to Mikhail Sergeev's WEXP interop check (WEXP-dev/interop-test-lab issue #40).
+
+New in v1.6.1: a manifest-only correction. The v1.6.0 index's downloads section carried the pre-fix hashes for the two updated base runners (base/conformance.py, base/conformance.cjs); v1.6.1 sets those two hash fields to the shipped runner bytes. Corpus bytes, the evaluated-set digest, and the counts are unchanged from v1.6.0, and the v1.6.0 tag stays as published.
 - Datasets: https://huggingface.co/zambodotdev (aer1-conformance-kit, agent-execution-receipts)
 
 ## Run it
