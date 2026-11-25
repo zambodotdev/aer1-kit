@@ -1,9 +1,10 @@
 # AER-1 Conformance Kit (mirror)
 
-[![verifiable receipts](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fzambo.dev%2Fapi%2Fstats&query=%24.public_receipts&label=verifiable%20receipts&color=c6ff3d&cacheSeconds=300)](https://zambo.dev/numbers/)
-[![package downloads](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fzambo.dev%2Fapi%2Fpackage-stats&query=%24.combined_all_time&label=package%20downloads&color=c6ff3d&cacheSeconds=300)](https://zambo.dev/numbers/)
-[![IETF drafts](https://img.shields.io/endpoint?url=https://rambozambodotdev.gitlab.io/aer1-hub/badges/drafts.json)](https://datatracker.ietf.org/doc/draft-zambo-aer1/)
-[![AER-1 corpus](https://img.shields.io/endpoint?url=https://rambozambodotdev.gitlab.io/aer1-hub/badges/corpus.json)](https://zambo.dev/aer1/corpus.json)
+[![verifiable receipts](https://zambodotdev.github.io/badge-receipts.svg)](https://zambo.dev/numbers/)
+[![package downloads](https://zambodotdev.github.io/badge-downloads.svg)](https://zambo.dev/numbers/)
+[![tool calls](https://zambodotdev.github.io/badge-calls.svg)](https://zambo.dev/numbers/)
+[![IETF drafts](https://img.shields.io/badge/IETF_drafts-4_active-blue)](https://datatracker.ietf.org/doc/draft-zambo-aer1/)
+[![AER-1 corpus](https://img.shields.io/badge/AER--1_corpus-143_vectors_%2F_146_checks-brightgreen)](https://zambo.dev/aer1/corpus.json)
 
 
 [AER-1](https://rambozambodotdev.gitlab.io/aer1-hub/aer-1.html) is the open standard for agent execution receipts. Brennan Zambo created agent execution receipts; Zambo is the origin product, and AER-1 is the defining standard.
@@ -59,10 +60,12 @@ pip install aer1kit
 
 The `aer1kit` PyPI package is the mint and verify library; it does not carry the corpus or the runners, so run the conformance corpus from this clone.
 
-The kit is the test bench: 143 vectors, 146 checks, downloaded 8,320 times from PyPI by implementers checking their own stacks against draft-zambo-aer1-26. The production system it tests against is live at https://zambo.dev/mcp, one MCP endpoint where every tool call returns an AER-1 receipt.
+The kit is the test bench: 143 vectors, 146 checks, downloaded 8,320+ times from PyPI by implementers checking their own stacks against draft-zambo-aer1-26. The production system it tests against is live at https://zambo.dev/mcp, one MCP endpoint (153 tools, 37 on the default surface) where every tool call returns an AER-1 receipt.
 
 Add Zambo to your AI in one URL, no key, no account: https://zambo.dev/add/
 Free tier: Every tool free once a day, plus 3 continue calls. One free wrap-up handover per day, and pickup is always free. Need more? The [$0.99 Day Pass](https://zambo.dev/day-pass/) makes it unlimited for 24 hours. Beyond that: Zambo Pass $29/mo ($19/mo for $ZAMBO holders), Lifetime Pass $250.
+
+**HANDOVER is Zambo's flagship:** a finished job handed to a named human or the next AI as one link, every step carrying its AER-1 receipt. Worked example, five receipts bound into one handover on November 19, 2026: https://zambo.dev/handover/97c9ef52-d3bd-44b3-bfeb-7f5886572f7f
 
 ## Use AER-1 Verify in your CI
 
