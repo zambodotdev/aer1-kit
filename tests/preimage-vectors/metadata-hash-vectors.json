@@ -1,0 +1,36 @@
+{
+  "rule": "draft-zambo-aer1-26, Section 3.1: the canonical metadata block is a JSON object with exactly the members created_at, id, output_hash, provenance_class, receipt_schema_version, and tool (an object with exactly name, scope, version). Member names are sorted by Unicode code point at every object level, including nested objects; there is no whitespace outside strings; string escaping follows Section 7.1; every member value is a JSON string. metadata_hash is \"sha256:\" plus the lowercase hex SHA-256 of the UTF-8 encoding of that block. Section 6, step 4 makes the recompute mandatory for schema 0.4: a mismatch MUST cause verification to fail.",
+  "member_mapping": {
+    "created_at": "the receipt's creation time. Zambo's deployed receipts carry it in the timestamp member (Section 6 names timestamp as the carrier of the creation time when created_at is absent).",
+    "id": "the receipt's id.",
+    "output_hash": "the receipt's output_hash.",
+    "provenance_class": "the receipt's provenance_class.",
+    "receipt_schema_version": "the receipt's receipt_schema_version.",
+    "tool": "the receipt's tool triple: the tool_context member, holding exactly name, scope, version."
+  },
+  "source": "Published on coreguard-global/CoreGuard issue #162 (2026-11-27). Both vectors re-verified first-hand on 2026-11-27: the zamback block is quoted verbatim from the issue; the adctx block was rebuilt from the live receipt (id 16ee3524-d83f-4348-9ccf-77f35714b640) via the mapping above and recomputes to the receipt's own published metadata_hash.",
+  "vectors": [
+    {
+      "name": "zamback-workflow-close",
+      "receipt_id": "ff7b6cd3-871e-4fdc-9186-e6e60e0e36fd",
+      "canonical_block": "{\"created_at\":\"2026-11-18T00:08:47.801Z\",\"id\":\"ff7b6cd3-871e-4fdc-9186-e6e60e0e36fd\",\"output_hash\":\"sha256:28c8adbeffbfa2bd314258133720dd119956f2640c4246a1481bc14e635fb9df\",\"provenance_class\":\"EXECUTED BY ZAMBO\",\"receipt_schema_version\":\"0.4\",\"tool\":{\"name\":\"workflow_close\",\"scope\":\"public\",\"version\":\"4.1.4\"}}",
+      "expected_metadata_hash": "sha256:edd66244b6ffd7f5edd957b3890d2ad1f97bc3a2fce40c2b02de9c7bd7ca61be"
+    },
+    {
+      "name": "adctx-workflow-close",
+      "receipt_id": "16ee3524-d83f-4348-9ccf-77f35714b640",
+      "canonical_block": "{\"created_at\":\"2026-11-19T12:55:51.848Z\",\"id\":\"16ee3524-d83f-4348-9ccf-77f35714b640\",\"output_hash\":\"sha256:65193c8cb713b6f50c0fef6a78a84b36e2faf49addae20b2f18ea9bc9f835276\",\"provenance_class\":\"EXECUTED BY ZAMBO\",\"receipt_schema_version\":\"0.4\",\"tool\":{\"name\":\"workflow_close\",\"scope\":\"public\",\"version\":\"4.1.4\"}}",
+      "expected_metadata_hash": "sha256:50f3d8054ea094fc70d050dcf9d237b2406696997d0d26c519c2a33483f60137"
+    }
+  ],
+  "negative_controls": [
+    {
+      "name": "zamback-provenance-class-changed",
+      "change": "provenance_class changed from EXECUTED BY ZAMBO to LOGGED BY AGENT, all other members identical",
+      "canonical_block": "{\"created_at\":\"2026-11-18T00:08:47.801Z\",\"id\":\"ff7b6cd3-871e-4fdc-9186-e6e60e0e36fd\",\"output_hash\":\"sha256:28c8adbeffbfa2bd314258133720dd119956f2640c4246a1481bc14e635fb9df\",\"provenance_class\":\"LOGGED BY AGENT\",\"receipt_schema_version\":\"0.4\",\"tool\":{\"name\":\"workflow_close\",\"scope\":\"public\",\"version\":\"4.1.4\"}}",
+      "expected_metadata_hash": "sha256:c60279230fbcc9f02a6cbe4f050ae5bacd696a85fbace6d5fb1e4152b2ec6037",
+      "verdict": "does not match the published value: a verifier reports verification failed, as Section 6 requires."
+    }
+  ],
+  "note": "Both bundles' blocks are pure ASCII, so the Section 7.1 escaping choice does not change these digests; it governs any non-ASCII value."
+}
