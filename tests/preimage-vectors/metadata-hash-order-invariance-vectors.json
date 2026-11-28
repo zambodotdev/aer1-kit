@@ -1,0 +1,18 @@
+{
+  "addition": "Versioned addition, 2026-11-27: the order-invariance vector for metadata_hash, added after the published set, as committed to on the Colony preimage-rules thread (post fb85802a-7eca-4389-9cc7-a894c7373bb0) following CoreGuard issue #162. This file is an addition only: the published vector file is not modified by it.",
+  "base_file": "metadata-hash-vectors.json",
+  "base_file_sha256": "5af791ff577f19407029c687f97605c0611c3522de06d58ff6106174920e8d95",
+  "base_file_note": "The published set (2 positive vectors + 1 negative control) stays byte-identical; the sha256 above is the published file's digest so any reader can confirm it was not mutated.",
+  "rule": "draft-zambo-aer1-26, Section 3.1: member names are sorted by Unicode code point at every object level, including nested objects; there is no whitespace outside strings; every member value is a JSON string. Source member order never enters the computation, so a source presented in any order must rebuild the identical canonical block and the identical metadata_hash.",
+  "vectors": [
+    {
+      "name": "zamback-workflow-close-shuffled-source-order-invariance",
+      "receipt_id": "ff7b6cd3-871e-4fdc-9186-e6e60e0e36fd",
+      "source_order": "reverse of the published order, at every object level (tool object members reversed as well)",
+      "shuffled_source": "{\"tool\":{\"version\":\"4.1.4\",\"scope\":\"public\",\"name\":\"workflow_close\"},\"receipt_schema_version\":\"0.4\",\"provenance_class\":\"EXECUTED BY ZAMBO\",\"output_hash\":\"sha256:28c8adbeffbfa2bd314258133720dd119956f2640c4246a1481bc14e635fb9df\",\"id\":\"ff7b6cd3-871e-4fdc-9186-e6e60e0e36fd\",\"created_at\":\"2026-11-18T00:08:47.801Z\"}",
+      "expected_canonical_block": "{\"created_at\":\"2026-11-18T00:08:47.801Z\",\"id\":\"ff7b6cd3-871e-4fdc-9186-e6e60e0e36fd\",\"output_hash\":\"sha256:28c8adbeffbfa2bd314258133720dd119956f2640c4246a1481bc14e635fb9df\",\"provenance_class\":\"EXECUTED BY ZAMBO\",\"receipt_schema_version\":\"0.4\",\"tool\":{\"name\":\"workflow_close\",\"scope\":\"public\",\"version\":\"4.1.4\"}}",
+      "expected_metadata_hash": "sha256:edd66244b6ffd7f5edd957b3890d2ad1f97bc3a2fce40c2b02de9c7bd7ca61be",
+      "check": "Parse shuffled_source, sort member names by Unicode code point at every level, serialize with no whitespace outside strings, and SHA-256 the UTF-8 bytes. The rebuilt block must equal expected_canonical_block byte for byte, and the digest must equal expected_metadata_hash, which is the first positive vector's published value (sha256:edd66244b6ffd7f5edd957b3890d2ad1f97bc3a2fce40c2b02de9c7bd7ca61be). Any other result is a real divergence in the reader."
+    }
+  ]
+}
